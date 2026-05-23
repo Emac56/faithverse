@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FaithVerse — Daily Bible verses, devotions, and prayers to inspire and strengthen your faith every day.">
+  <meta name="keywords" content="Bible verse, daily devotion, Christian, prayer, faith, scripture">
+  <meta name="author" content="FaithVerse">
+  <meta property="og:title" content="FaithVerse — Daily Bible Verse">
+  <meta property="og:description" content="Start your day with God's Word. Daily Bible verses, devotions, and prayers for everyone.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#7c3aed">
+  <title>FaithVerse — Daily Bible Verse</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/TextPlugin.min.js"></script>
+
+  <script>tailwind.config = { darkMode: 'class' };</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ── FONTS ── */
+    body        { font-family: 'Nunito', sans-serif; }
+    .font-verse { font-family: 'Playfair Display', Georgia, serif; }
+
+    /* ── SCROLL PROGRESS ── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0%;
+      background: linear-gradient(to right, #7c3aed, #a78bfa, #7c3aed);
+      background-size: 200%;
+      animation: shimmer-bar 2s linear infinite;
+      z-index: 9999;
+      transition: width 0.1s linear;
+      pointer-events: none;
+    }
+    @keyframes shimmer-bar {
+      0%   { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* ── CSS THEME TOKENS ── */
+    :root {
+      --bg-base:      #faf9ff;
+      --bg-surface:   #f3f0ff;
+      --bg-card:      #ffffff;
+      --text-primary: #1e1b4b;
+      --text-second:  #4b5563;
+      --text-muted:   #9ca3af;
+      --border:       #e5e0ff;
+      --nav-bg:       rgba(255,255,255,0.92);
+      --nav-shadow:   0 2px 20px rgba(124,58,237,0.08);
+      --input-bg:     #ffffff;
+      --sidebar-bg:   #ffffff;
+      --accent:       #7c3aed;
+      --accent-light: #ede9fe;
+    }
+    html.dark {
+      --bg-base:      #0d0d1a;
+      --bg-surface:   #181828;
+      --bg-card:      #1e1c38;
+      --text-primary: #ece9ff;
+      --text-second:  #94a3b8;
+      --text-muted:   #64748b;
+      --border:       #2d2b50;
+      --nav-bg:       rgba(24,24,40,0.95);
+      --nav-shadow:   0 4px 20px rgba(0,0,0,0.5);
+      --input-bg:     #12121f;
+      --sidebar-bg:   #181828;
+      --accent-light: #2d2b50;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .surface-card   { background-color: var(--bg-card); }
+    .surface-soft   { background-color: var(--bg-surface); }
+    .text-primary   { color: var(--text-primary) !important; }
+    .text-second    { color: var(--text-second) !important; }
+    .text-muted-th  { color: var(--text-muted) !important; }
+    .border-themed  { border-color: var(--border) !important; }
+
+    /* ── NAV ── */
+    #main-nav {
+      background: var(--nav-bg);
+      box-shadow: var(--nav-shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    /* ── SIDEBAR ── */
+    #sidebar { background-color: var(--sidebar-bg); transition: background-color 0.3s; }
+    .sidebar-divider { border-color: var(--border); }
+    .sidebar-link { color: var(--text-primary); transition: background 0.2s, color 0.2s; touch-action: manipulation; }
+    .sidebar-link:hover  { background-color: var(--accent-light); color: var(--accent); }
+    .sidebar-link.active { background-color: var(--accent-light); color: var(--accent); font-weight: 700; }
+    html.dark .sidebar-link:hover,
+    html.dark .sidebar-link.active { color: #a78bfa; }
+
+    /* ── NAV LINK UNDERLINE ── */
+    .nav-link { position: relative; color: var(--text-primary); transition: color 0.2s; }
+    .nav-link::after {
+      content: '';
+      position: absolute; left: 0; bottom: -3px;
+      height: 2px; width: 0%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link:hover, .nav-link.active { color: var(--accent) !important; }
+
+    /* ── THEMED INPUT ── */
+    .themed-input {
+      background: var(--input-bg);
+      color: var(--text-primary);
+      border-color: var(--border);
+    }
+    .themed-input::placeholder { color: var(--text-muted); }
+
+    /* ── HERO SECTION ── */
+    #hero-section {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    #hero-bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 120%; /* Extra height for parallax room */
+      top: -10%;
+      object-fit: cover;
+      will-change: transform;
+    }
+    #hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,8,30,0.45) 0%,
+        rgba(10,8,30,0.25) 40%,
+        rgba(10,8,30,0.55) 100%
+      );
+    }
+
+    /* ── VERSE CARD ── */
+    #verse-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    #verse-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, transparent, #7c3aed, #a78bfa, #7c3aed, transparent);
+    }
+
+    /* ── LOADING SKELETON ── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-surface) 25%, var(--border) 50%, var(--bg-surface) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.4s ease infinite;
+      border-radius: 8px;
+    }
+    @keyframes skeleton-shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .verse-skeleton { display: none; }
+    .verse-skeleton.active { display: block; }
+    #verse-content.loading #verse-text,
+    #verse-content.loading #verse-reference,
+    #verse-content.loading .verse-divider { opacity: 0; }
+    #verse-content.loading .verse-skeleton { display: block; }
+
+    #verse-text, #verse-reference { transition: opacity 0.25s ease; }
+
+    /* ── TOAST ── */
+    #toast-container {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999; display: flex; flex-direction: column;
+      align-items: center; gap: 8px; pointer-events: none;
+    }
+    .toast {
+      background: #1e1b4b; color: #fff;
+      padding: 11px 22px; border-radius: 999px;
+      font-size: 13.5px; font-family: 'Nunito', sans-serif; font-weight: 600;
+      display: flex; align-items: center; gap: 9px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      white-space: nowrap;
+    }
+    .toast.show  { opacity: 1; transform: translateY(0); }
+    .toast.error { background: #7f1d1d; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      display: inline-block; width: 24px; height: 1.5px;
+      background: var(--accent); border-radius: 2px;
+    }
+
+    .hover-lift { will-change: transform; }
+
+    /* ── BUTTONS ── */
+    button { touch-action: manipulation; }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      border-radius: 14px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:not(:disabled):hover {
+      background: #6d28d9;
+      box-shadow: 0 6px 20px rgba(124,58,237,0.35);
+    }
+    .btn-outline {
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      border-radius: 14px;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-outline:not(:disabled):hover { background: var(--accent); color: #fff; }
+
+    /* Bookmark button — saved state */
+    #bookmark-btn.is-saved {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    html.dark #verse-card { box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+
+    /* ── BOOKMARKS MODAL ── */
+    #bookmarks-modal {
+      position: fixed; inset: 0; z-index: 60;
+      display: flex; align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    #bookmarks-modal.open {
+      pointer-events: all;
+      opacity: 1;
+    }
+    #bookmarks-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    #bookmarks-panel {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-card);
+      border-radius: 28px 28px 0 0;
+      max-height: 85vh;
+      display: flex; flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+    }
+    #bookmarks-modal.open #bookmarks-panel {
+      transform: translateY(0);
+    }
+    @media (min-width: 640px) {
+      #bookmarks-modal {
+        align-items: center;
+      }
+      #bookmarks-panel {
+        border-radius: 28px;
+        max-height: 80vh;
+        transform: translateY(20px) scale(0.96);
+      }
+      #bookmarks-modal.open #bookmarks-panel {
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Bookmark drag handle */
+    .drag-handle {
+      width: 40px; height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+
+    /* Bookmark list item */
+    .bookmark-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .bookmark-item:hover { background: var(--accent-light); }
+    .bookmark-remove {
+      position: absolute; top: 10px; right: 10px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      transition: background 0.2s, color 0.2s;
+    }
+    .bookmark-remove:hover { background: #fee2e2; color: #dc2626; }
+
+    /* Bookmark nav badge */
+    #bookmark-nav-badge {
+      position: absolute; top: -2px; right: -2px;
+      min-width: 16px; height: 16px;
+      background: #7c3aed; color: #fff;
+      font-size: 10px; font-weight: 700;
+      border-radius: 999px;
+      display: none; align-items: center; justify-content: center;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    #bookmark-nav-badge.visible { display: flex; }
+
+    /* ── MOBILE LAYOUT TWEAKS ── */
+    /* Tighter section spacing on mobile */
+    @media (max-width: 639px) {
+      #devotion { padding-left: 16px; padding-right: 16px; }
+      #prayer, #about, #contact { margin-left: 12px; margin-right: 12px; }
+      .devotion-card { padding: 16px; }
+      #verse-card .px-6 { padding-left: 20px; padding-right: 20px; }
+      #verse-card .py-7 { padding-top: 24px; padding-bottom: 24px; }
+      /* Bigger tap targets on mobile buttons */
+      #new-verse-btn, #copy-btn, #share-btn, #bookmark-btn {
+        min-height: 48px;
+      }
+    }
+
+    /* ── BACK TO TOP ── */
+    #back-to-top {
+      position: fixed; bottom: 24px; right: 20px;
+      width: 44px; height: 44px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(124,58,237,0.4);
+      z-index: 40;
+      opacity: 0; transform: translateY(12px) scale(0.8);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      cursor: pointer;
+    }
+    #back-to-top.visible {
+      opacity: 1; transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+    #back-to-top:hover { background: #6d28d9; }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+  <div id="scroll-progress" role="progressbar" aria-label="Page scroll progress"></div>
+  <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- ═══════════════════════
+       BOOKMARKS MODAL
+  ═══════════════════════ -->
+  <div id="bookmarks-modal" role="dialog" aria-modal="true" aria-label="Saved Verses">
+    <div id="bookmarks-overlay"></div>
+    <div id="bookmarks-panel">
+      <!-- Drag handle (mobile) -->
+      <div class="drag-handle sm:hidden"></div>
+
+      <!-- Header -->
+      <div class="flex items-center justify-between px-5 py-4 border-b" style="border-color: var(--border);">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center" style="background: var(--accent-light);">
+            <i class="fa-solid fa-bookmark text-violet-500 text-sm" aria-hidden="true"></i>
+          </div>
+          <h2 class="font-verse text-lg font-bold" style="color: var(--text-primary);">Saved Verses</h2>
+          <span id="bookmarks-count" class="text-xs font-bold text-violet-500 hidden"></span>
+        </div>
+        <button id="bookmarks-close"
+          class="w-8 h-8 flex items-center justify-center rounded-full transition"
+          style="color: var(--text-muted);"
+          aria-label="Close saved verses">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- List -->
+      <div id="bookmarks-list" class="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Footer -->
+      <div class="px-5 py-4 border-t flex items-center justify-between" style="border-color: var(--border);">
+        <p class="text-xs" style="color: var(--text-muted);">Tap a verse to load it</p>
+        <button id="clear-bookmarks-btn"
+          class="text-xs font-semibold text-red-400 hover:text-red-600 transition hidden"
+          aria-label="Clear all saved verses">
+          Clear All
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Top -->
+  <button id="back-to-top" aria-label="Back to top">
+    <i class="fa-solid fa-chevron-up text-sm" aria-hidden="true"></i>
+  </button>
+
+  <main class="overflow-x-hidden flex-1">
+
+    <!-- ═══════════════════════
+         NAVIGATION
+    ═══════════════════════ -->
+    <header>
+      <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 sm:px-6 py-4">
+        <a href="#home" class="flex items-center gap-2.5 no-underline" aria-label="FaithVerse home">
+          <img src="images/logo.jpg" class="w-9 h-9 rounded-full object-cover ring-2 ring-violet-200" alt="FaithVerse Logo">
+          <span class="font-verse text-xl font-bold" style="color: var(--text-primary);">FaithVerse</span>
+        </a>
+
+        <ul class="hidden md:flex gap-7 text-sm font-semibold list-none m-0 p-0" role="list">
+          <li><a href="#home"     class="nav-link" data-section="home">Home</a></li>
+          <li><a href="#verse"    class="nav-link" data-section="verse">Verse</a></li>
+          <li><a href="#devotion" class="nav-link" data-section="devotion">Devotion</a></li>
+          <li><a href="#prayer"   class="nav-link" data-section="prayer">Prayer</a></li>
+          <li><a href="#about"    class="nav-link" data-section="about">About</a></li>
+          <li><a href="#contact"  class="nav-link" data-section="contact">Contact</a></li>
+        </ul>
+
+        <div class="flex items-center gap-1.5">
+          <!-- Bookmarks toggle -->
+          <button id="bookmarks-toggle-btn"
+            class="relative w-9 h-9 flex items-center justify-center rounded-full text-violet-500 hover:text-violet-700 hover:bg-violet-50 transition-all duration-200"
+            aria-label="View saved verses">
+            <i class="fa-regular fa-bookmark text-base" aria-hidden="true"></i>
+            <span id="bookmark-nav-badge" aria-hidden="true"></span>
+          </button>
+
+          <button id="dark-toggle"
+            class="w-9 h-9 flex items-center justify-center rounded-full text-violet-500 hover:text-violet-700 hover:bg-violet-50 transition-all duration-200"
+            aria-label="Toggle dark mode">
+            <i id="dark-icon" class="fa-solid fa-moon text-base" aria-hidden="true"></i>
+          </button>
+          <button id="menu-btn"
+            class="md:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-violet-50 transition-all duration-200"
+            style="color: var(--text-primary);"
+            aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
+            <i class="fa-solid fa-bars text-base" aria-hidden="true"></i>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Overlay -->
+      <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/40 z-40 md:hidden" aria-hidden="true"></div>
+
+      <!-- Sidebar -->
+      <div id="sidebar" role="dialog" aria-modal="true" aria-label="Navigation menu"
+        class="fixed top-0 right-0 h-full w-72 z-50 shadow-2xl flex flex-col md:hidden translate-x-full">
+
+        <div class="sidebar-divider flex items-center justify-between px-6 py-5 border-b">
+          <div class="flex items-center gap-3">
+            <img src="images/logo.jpg" class="w-8 h-8 rounded-full object-cover" alt="FaithVerse Logo">
+            <span class="font-verse text-lg font-bold" style="color: var(--text-primary);">FaithVerse</span>
+          </div>
+          <button id="sidebar-close"
+            class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-violet-100 transition"
+            style="color: var(--text-muted);" aria-label="Close navigation menu">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <nav class="flex flex-col px-4 py-5 gap-1 flex-1" aria-label="Mobile navigation">
+          <a href="#home"     class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold" data-section="home">
+            <i class="fa-solid fa-house w-5 text-violet-400" aria-hidden="true"></i> Home
+          </a>
+          <a href="#verse"    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold" data-section="verse">
+            <i class="fa-solid fa-book-bible w-5 text-violet-400" aria-hidden="true"></i> Verse
+          </a>
+          <a href="#devotion" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold" data-section="devotion">
+            <i class="fa-solid fa-heart w-5 text-violet-400" aria-hidden="true"></i> Devotion
+          </a>
+          <a href="#prayer"   class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold" data-section="prayer">
+            <i class="fa-solid fa-hands-praying w-5 text-violet-400" aria-hidden="true"></i> Prayer
+          </a>
+          <a href="#about"    class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold" data-section="about">
+            <i class="fa-solid fa-circle-info w-5 text-violet-400" aria-hidden="true"></i> About
+          </a>
+          <a href="#contact"  class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold" data-section="contact">
+            <i class="fa-solid fa-envelope w-5 text-violet-400" aria-hidden="true"></i> Contact
+          </a>
+
+          <div class="mt-2 pt-2" style="border-top: 1px solid var(--border);">
+            <button id="bookmarks-toggle-sidebar"
+              class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold">
+              <i class="fa-regular fa-bookmark w-5 text-violet-400" aria-hidden="true"></i>
+              Saved Verses
+              <span id="bookmark-sidebar-badge" class="ml-auto text-xs bg-violet-100 text-violet-600 font-bold px-2 py-0.5 rounded-full hidden"></span>
+            </button>
+          </div>
+        </nav>
+
+        <div class="sidebar-divider flex items-center justify-between px-6 py-4 border-t">
+          <p class="text-xs" style="color: var(--text-muted);">© 2025 FaithVerse</p>
+          <button id="dark-toggle-sidebar"
+            class="w-9 h-9 flex items-center justify-center rounded-full text-violet-500 hover:text-violet-700 hover:bg-violet-50 transition-all"
+            aria-label="Toggle dark mode">
+            <i id="dark-icon-sidebar" class="fa-solid fa-moon text-base" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════
+         HOME / HERO
+    ═══════════════════════ -->
+    <section id="home" aria-label="Home">
+      <section id="verse" id="hero-section" aria-label="Daily Bible Verse"
+        class="relative w-full min-h-[100svh] overflow-hidden rounded-b-3xl">
+
+        <img id="hero-bg" src="images/background.webp"
+          alt="Peaceful cross silhouette against a sunlit sky" loading="eager">
+        <div id="hero-overlay"></div>
+
+        <!-- Verse Card -->
+        <div class="card-scroll relative z-10 flex items-center justify-center min-h-[100svh] px-4 py-20">
+          <div id="verse-card" class="rounded-3xl w-full max-w-[340px] md:max-w-xl shadow-2xl">
+
+            <div class="px-6 py-7 md:px-10 md:py-9 text-center">
+
+              <div class="section-label mb-5 mx-auto w-fit">Today's Verse</div>
+
+              <div class="date-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-200 mb-6" style="border-color: var(--border);">
+                <i class="fa-regular fa-calendar text-violet-400 text-xs" aria-hidden="true"></i>
+                <time id="current-date" class="text-violet-500 text-xs font-semibold" datetime="">—</time>
+              </div>
+
+              <div id="verse-content">
+                <!-- Skeleton -->
+                <div class="verse-skeleton mb-2">
+                  <div class="skeleton h-4 w-11/12 mx-auto mb-2"></div>
+                  <div class="skeleton h-4 w-full mx-auto mb-2"></div>
+                  <div class="skeleton h-4 w-10/12 mx-auto mb-2"></div>
+                  <div class="skeleton h-4 w-8/12 mx-auto mt-4"></div>
+                </div>
+
+                <!-- Verse -->
+                <blockquote class="m-0">
+                  <p class="font-verse text-xl md:text-3xl font-semibold leading-relaxed text-primary">
+                    <span class="text-violet-400 text-4xl md:text-5xl leading-none font-bold" aria-hidden="true">&ldquo;</span>
+                    <span id="verse-text">I can do all things through Christ who strengthens me.</span>
+                    <span class="text-violet-400 text-4xl md:text-5xl leading-none font-bold" aria-hidden="true">&rdquo;</span>
+                  </p>
+
+                  <div class="verse-divider flex items-center justify-center gap-3 my-5" aria-hidden="true">
+                    <div class="w-12 h-px" style="background: var(--border);"></div>
+                    <span class="text-violet-300 text-xs">✦</span>
+                    <div class="w-12 h-px" style="background: var(--border);"></div>
+                  </div>
+
+                  <footer>
+                    <cite id="verse-reference" class="not-italic font-verse text-violet-500 text-base md:text-lg font-semibold italic">
+                      Philippians 4:13
+                    </cite>
+                  </footer>
+                </blockquote>
+
+                <p class="mt-3 text-xs md:text-sm leading-relaxed" style="color: var(--text-second);">
+                  God gives us the strength we need each day.
+                  Trust Him and He will help you overcome.
+                </p>
+              </div>
+
+              <!-- Action buttons -->
+              <div id="verse-actions" class="buttons-scroll flex flex-col gap-3 mt-7">
+                <button id="new-verse-btn"
+                  class="btn-primary flex items-center justify-center gap-2 px-5 py-3 text-sm"
+                  aria-label="Load a new Bible verse">
+                  <i class="fa-solid fa-book-bible" aria-hidden="true"></i>
+                  New Verse
+                </button>
+
+                <div class="flex gap-3">
+                  <button id="copy-btn"
+                    class="btn-outline flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm"
+                    aria-label="Copy verse to clipboard">
+                    <i class="fa-regular fa-copy" aria-hidden="true"></i>
+                    Copy
+                  </button>
+                  <button id="share-btn"
+                    class="btn-outline flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm"
+                    aria-label="Share this verse">
+                    <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+                    Share
+                  </button>
+                </div>
+
+                <!-- Phase 3: Bookmark button -->
+                <button id="bookmark-btn"
+                  class="btn-outline flex items-center justify-center gap-2 px-4 py-3 text-sm"
+                  aria-label="Save this verse">
+                  <i id="bookmark-icon" class="fa-regular fa-bookmark" aria-hidden="true"></i>
+                  <span id="bookmark-btn-label">Save Verse</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ═══════════════════════
+         DEVOTION CARDS
+    ═══════════════════════ -->
+    <section id="devotion" aria-label="Daily Devotion" class="mt-16 px-4 sm:px-6 md:px-12">
+      <div class="text-center mb-8">
+        <div class="section-label mx-auto w-fit mb-3">Daily Practice</div>
+        <h2 class="font-verse text-3xl font-bold text-primary">How to Grow in Faith</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+
+        <article class="devotion-card hover-lift card-scroll surface-soft flex items-center gap-4 md:gap-5 rounded-3xl p-5 md:p-6 shadow-sm border border-themed">
+          <div class="devotion-icon w-14 h-14 md:w-16 md:h-16 rounded-2xl surface-card flex items-center justify-center shadow-sm shrink-0">
+            <i class="fa-solid fa-book-bible text-2xl md:text-3xl text-violet-600" aria-hidden="true"></i>
+          </div>
+          <div>
+            <h3 class="devotion-title font-verse text-lg md:text-xl font-bold text-primary">Read</h3>
+            <p class="devotion-text text-xs md:text-sm mt-1.5 leading-relaxed" style="color: var(--text-second);">
+              Discover inspiring Bible verses every day.
+            </p>
+          </div>
+        </article>
+
+        <article class="devotion-card hover-lift card-scroll surface-soft flex items-center gap-4 md:gap-5 rounded-3xl p-5 md:p-6 shadow-sm border border-themed">
+          <div class="devotion-icon w-14 h-14 md:w-16 md:h-16 rounded-2xl surface-card flex items-center justify-center shadow-sm shrink-0">
+            <i class="fa-solid fa-heart text-2xl md:text-3xl text-violet-600" aria-hidden="true"></i>
+          </div>
+          <div>
+            <h3 class="devotion-title font-verse text-lg md:text-xl font-bold text-primary">Reflect</h3>
+            <p class="devotion-text text-xs md:text-sm mt-1.5 leading-relaxed" style="color: var(--text-second);">
+              Take time to reflect and apply God's word.
+            </p>
+          </div>
+        </article>
+
+        <article class="devotion-card hover-lift card-scroll surface-soft flex items-center gap-4 md:gap-5 rounded-3xl p-5 md:p-6 shadow-sm border border-themed">
+          <div class="devotion-icon w-14 h-14 md:w-16 md:h-16 rounded-2xl surface-card flex items-center justify-center shadow-sm shrink-0">
+            <i class="fa-solid fa-hands-praying text-2xl md:text-3xl text-violet-600" aria-hidden="true"></i>
+          </div>
+          <div>
+            <h3 class="devotion-title font-verse text-lg md:text-xl font-bold text-primary">Pray</h3>
+            <p class="devotion-text text-xs md:text-sm mt-1.5 leading-relaxed" style="color: var(--text-second);">
+              Pray and talk to God in every moment.
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════
+         PRAYER
+    ═══════════════════════ -->
+    <section id="prayer" aria-label="Today's Prayer" class="mt-12 mx-3 sm:mx-6">
+
+      <article class="prayer-card hover-lift card-scroll surface-soft rounded-3xl p-5 md:p-8 flex flex-col md:flex-row items-center md:items-start gap-5 md:gap-6 shadow-sm border border-themed mb-4">
+        <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl surface-card flex items-center justify-center shadow-sm shrink-0">
+          <i class="fa-solid fa-hands-praying text-3xl md:text-4xl text-violet-600" aria-hidden="true"></i>
+        </div>
+        <div class="text-center md:text-left">
+          <div class="section-label mb-2">Prayer</div>
+          <h2 class="font-verse text-xl md:text-2xl font-bold text-violet-600 mb-3">Today's Prayer</h2>
+          <p class="text-sm leading-relaxed max-w-2xl" style="color: var(--text-second);">
+            Dear Lord, thank You for Your strength that sustains me every day.
+            Help me trust You more and lean on You in all situations. Amen.
+          </p>
+        </div>
+      </article>
+
+      <article class="prayer-card hover-lift card-scroll surface-soft rounded-3xl p-4 md:p-5 flex items-center gap-4 md:gap-5 shadow-sm border border-themed mb-6">
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl surface-card flex items-center justify-center shadow-sm shrink-0">
+          <i class="fa-solid fa-quote-left text-violet-500 text-base md:text-lg" aria-hidden="true"></i>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-primary">Let God's word be a light to your path today.</p>
+          <p class="text-xs mt-1" style="color: var(--text-muted);">You are loved. You are never alone.</p>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ═══════════════════════
+         ABOUT
+    ═══════════════════════ -->
+    <section id="about" aria-label="About FaithVerse"
+      class="hover-lift mx-3 sm:mx-6 mb-5 surface-soft rounded-3xl p-6 md:p-8 shadow-sm card-scroll border border-themed">
+      <div class="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+        <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl surface-card flex items-center justify-center shadow-sm shrink-0">
+          <i class="fa-solid fa-book-open text-3xl md:text-4xl text-violet-600" aria-hidden="true"></i>
+        </div>
+        <div class="text-center md:text-left">
+          <div class="section-label mb-2">Who We Are</div>
+          <h2 class="font-verse text-xl md:text-2xl font-bold text-violet-600 mb-3">About FaithVerse</h2>
+          <p class="text-sm leading-relaxed max-w-3xl" style="color: var(--text-second);">
+            FaithVerse is a Christian-inspired website created to share daily Bible verses,
+            prayers, and encouragement for everyone. Our mission is to inspire people
+            through God's word and remind them that they are never alone in life.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════
+         CONTACT
+    ═══════════════════════ -->
+    <section id="contact" aria-label="Contact Us"
+      class="hover-lift mx-3 sm:mx-6 mb-12 surface-soft rounded-3xl p-6 md:p-8 shadow-sm card-scroll border border-themed">
+      <div class="flex flex-col md:flex-row items-start gap-8 md:gap-10">
+
+        <div class="flex flex-col items-center md:items-start gap-4 md:w-52 shrink-0 text-center md:text-left">
+          <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl surface-card flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-envelope text-3xl md:text-4xl text-violet-600" aria-hidden="true"></i>
+          </div>
+          <div class="section-label">Get in Touch</div>
+          <h2 class="font-verse text-xl md:text-2xl font-bold text-violet-600">Contact Us</h2>
+          <p class="text-sm leading-relaxed" style="color: var(--text-second);">
+            Have a prayer request, question, or encouragement to share?
+          </p>
+          <div class="flex items-center gap-5 mt-1" role="list" aria-label="Social media links">
+            <a href="#" class="text-xl text-violet-500 hover:text-violet-700 transition duration-200 p-2" aria-label="Follow us on Facebook" role="listitem">
+              <i class="fa-brands fa-facebook" aria-hidden="true"></i>
+            </a>
+            <a href="#" class="text-xl text-violet-500 hover:text-violet-700 transition duration-200 p-2" aria-label="Follow us on Instagram" role="listitem">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a href="#" class="text-xl text-violet-500 hover:text-violet-700 transition duration-200 p-2" aria-label="Subscribe on YouTube" role="listitem">
+              <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="flex-1 w-full">
+          <form id="prayer-form" novalidate>
+
+            <div class="flex flex-col gap-1 mb-4">
+              <label for="form-name" class="text-xs font-bold text-violet-600 uppercase tracking-wide">Your Name</label>
+              <input id="form-name" type="text" placeholder="e.g. Juan dela Cruz" autocomplete="name"
+                class="themed-input w-full px-4 py-3 rounded-2xl border outline-none focus:ring-2 focus:ring-violet-400 transition text-sm">
+            </div>
+
+            <div class="flex flex-col gap-1 mb-4">
+              <label for="form-email" class="text-xs font-bold text-violet-600 uppercase tracking-wide">
+                Email <span class="font-normal normal-case" style="color: var(--text-muted);">(optional)</span>
+              </label>
+              <input id="form-email" type="email" placeholder="you@email.com" autocomplete="email"
+                class="themed-input w-full px-4 py-3 rounded-2xl border outline-none focus:ring-2 focus:ring-violet-400 transition text-sm">
+            </div>
+
+            <div class="flex flex-col gap-1 mb-5">
+              <label for="form-message" class="text-xs font-bold text-violet-600 uppercase tracking-wide">Prayer Request or Message</label>
+              <textarea id="form-message" rows="4" placeholder="Share your prayer request or message here..."
+                class="themed-input w-full px-4 py-3 rounded-2xl border outline-none focus:ring-2 focus:ring-violet-400 transition text-sm resize-none"></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn"
+              class="btn-primary flex items-center justify-center gap-2 px-6 py-3 text-sm w-full md:w-auto">
+              <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+              Send Message
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mb-8 text-center">
+      <p class="text-xs" style="color: var(--text-muted);">© 2025 FaithVerse. All rights reserved.</p>
+    </footer>
+
+  </main>
+
+  <script type="module" src="src/js/app.js"></script>
+</body>
+</html>
