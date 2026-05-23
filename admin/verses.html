@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>FaithVerse • Verses</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;500;600;700&display=swap"
+rel="stylesheet"
+/>
+
+<script>
+tailwind.config = {
+    darkMode: 'class'
+}
+</script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+</head>
+
+<body class="min-h-screen bg-[#0d0d1a] text-[#ece9ff] font-['Nunito'] flex overflow-hidden">
+
+<!-- SIDEBAR -->
+
+<aside class="hidden lg:flex w-72 flex-col border-r border-white/10 bg-white/5 backdrop-blur-xl p-6">
+
+<div class="mb-10">
+
+<h1 class="font-['Playfair_Display'] text-4xl font-bold">
+FaithVerse
+</h1>
+
+<p class="mt-2 text-sm text-slate-400">
+Verse Management
+</p>
+
+</div>
+
+<nav class="space-y-3">
+
+<a
+href="/admin/dashboard.html"
+class="block rounded-2xl px-5 py-4 hover:bg-white/5 transition-all">
+
+Dashboard
+
+</a>
+
+<a
+href="/admin/users.html"
+class="block rounded-2xl px-5 py-4 hover:bg-white/5 transition-all">
+
+Users
+
+</a>
+
+<a
+href="/admin/verses.html"
+class="block rounded-2xl bg-violet-600 px-5 py-4 font-semibold">
+
+Verses
+
+</a>
+
+<a
+href="/admin/prayers.html"
+class="block rounded-2xl px-5 py-4 hover:bg-white/5 transition-all">
+
+Prayer Requests
+
+</a>
+
+<a
+href="/admin/settings.html"
+class="block rounded-2xl px-5 py-4 hover:bg-white/5 transition-all">
+
+Settings
+
+</a>
+
+</nav>
+
+<button
+id="logoutBtn"
+class="mt-auto rounded-2xl border border-red-500/20 bg-red-500/10 py-4 text-red-400 hover:bg-red-500/20 transition-all">
+
+Logout
+
+</button>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="flex-1 overflow-y-auto p-6 lg:p-10">
+
+<div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+
+<div>
+
+<h2 class="text-5xl font-bold">
+Verses
+</h2>
+
+<p class="mt-3 text-lg text-slate-400">
+Manage Bible verses
+</p>
+
+</div>
+
+<button
+id="openModalBtn"
+class="rounded-2xl bg-violet-600 px-6 py-4 font-semibold hover:bg-violet-500 transition-all">
+
+Add Verse
+
+</button>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
+
+<div class="overflow-x-auto">
+
+<table class="w-full">
+
+<thead class="border-b border-white/10 bg-black/10">
+
+<tr>
+
+<th class="px-6 py-5 text-left text-sm font-semibold text-slate-300">
+Verse
+</th>
+
+<th class="px-6 py-5 text-left text-sm font-semibold text-slate-300">
+Reference
+</th>
+
+<th class="px-6 py-5 text-left text-sm font-semibold text-slate-300">
+Favorite
+</th>
+
+<th class="px-6 py-5 text-right text-sm font-semibold text-slate-300">
+Actions
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+id="versesTable"
+class="divide-y divide-white/5">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</main>
+
+<!-- MODAL -->
+
+<div
+id="verseModal"
+class="fixed inset-0 hidden items-center justify-center bg-black/70 p-6 z-50">
+
+<div class="w-full max-w-2xl rounded-3xl border border-white/10 bg-[#181828] p-8">
+
+<h3 class="mb-6 text-3xl font-bold">
+Add Verse
+</h3>
+
+<form
+id="verseForm"
+class="space-y-5">
+
+<textarea
+id="verseText"
+placeholder="Verse text..."
+class="h-40 w-full rounded-2xl border border-white/10 bg-white/5 p-5 outline-none"></textarea>
+
+<input
+id="verseReference"
+type="text"
+placeholder="John 3:16"
+class="w-full rounded-2xl border border-white/10 bg-white/5 p-5 outline-none" />
+
+<div class="flex items-center justify-end gap-4">
+
+<button
+type="button"
+id="closeModalBtn"
+class="rounded-2xl border border-white/10 px-5 py-3 hover:bg-white/5 transition-all">
+
+Cancel
+
+</button>
+
+<button
+type="submit"
+class="rounded-2xl bg-violet-600 px-5 py-3 font-semibold hover:bg-violet-500 transition-all">
+
+Save Verse
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { supabase } from '/src/js/supabase.js'
+
+const versesTable =
+    document.getElementById(
+        'versesTable'
+    )
+
+const verseModal =
+    document.getElementById(
+        'verseModal'
+    )
+
+const openModalBtn =
+    document.getElementById(
+        'openModalBtn'
+    )
+
+const closeModalBtn =
+    document.getElementById(
+        'closeModalBtn'
+    )
+
+const verseForm =
+    document.getElementById(
+        'verseForm'
+    )
+
+const verseText =
+    document.getElementById(
+        'verseText'
+    )
+
+const verseReference =
+    document.getElementById(
+        'verseReference'
+    )
+
+async function checkAdmin() {
+
+    const {
+        data: { session }
+    } = await supabase.auth.getSession()
+
+    if (!session) {
+
+        window.location.href =
+            '/admin/login.html'
+    }
+}
+
+async function loadVerses() {
+
+    const { data } =
+        await supabase
+            .from('verses')
+            .select('*')
+            .order('created_at', {
+                ascending: false
+            })
+
+    versesTable.innerHTML = ''
+
+    data?.forEach((verse) => {
+
+        versesTable.innerHTML += `
+
+        <tr class="hover:bg-white/[0.03] transition-all">
+
+            <td class="px-6 py-5 max-w-xl">
+                ${verse.verse_text}
+            </td>
+
+            <td class="px-6 py-5 text-slate-400">
+                ${verse.verse_reference}
+            </td>
+
+            <td class="px-6 py-5">
+
+                <button
+                onclick="toggleFavorite(${verse.id}, ${verse.is_favorite})"
+                class="text-2xl">
+
+                ${
+                    verse.is_favorite
+                    ? '⭐'
+                    : '☆'
+                }
+
+                </button>
+
+            </td>
+
+            <td class="px-6 py-5">
+
+                <div class="flex justify-end gap-3">
+
+                    <button
+                    onclick="deleteVerse(${verse.id})"
+                    class="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-2 text-red-400 hover:bg-red-500/20 transition-all">
+
+                    Delete
+
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `
+    })
+
+    gsap.from(
+        'tbody tr',
+        {
+            opacity: 0,
+            y: 20,
+            stagger: 0.05,
+            duration: 0.5
+        }
+    )
+}
+
+verseForm.addEventListener(
+    'submit',
+    async (e) => {
+
+        e.preventDefault()
+
+        await supabase
+            .from('verses')
+            .insert({
+                verse_text:
+                    verseText.value,
+
+                verse_reference:
+                    verseReference.value
+            })
+
+        verseForm.reset()
+
+        verseModal.classList.add(
+            'hidden'
+        )
+
+        verseModal.classList.remove(
+            'flex'
+        )
+
+        loadVerses()
+    }
+)
+
+window.toggleFavorite =
+async function(id, current) {
+
+    await supabase
+        .from('verses')
+        .update({
+            is_favorite: !current
+        })
+        .eq('id', id)
+
+    loadVerses()
+}
+
+window.deleteVerse =
+async function(id) {
+
+    const confirmed =
+        confirm('Delete verse?')
+
+    if (!confirmed) return
+
+    await supabase
+        .from('verses')
+        .delete()
+        .eq('id', id)
+
+    loadVerses()
+}
+
+openModalBtn.addEventListener(
+    'click',
+    () => {
+
+        verseModal.classList.remove(
+            'hidden'
+        )
+
+        verseModal.classList.add(
+            'flex'
+        )
+    }
+)
+
+closeModalBtn.addEventListener(
+    'click',
+    () => {
+
+        verseModal.classList.add(
+            'hidden'
+        )
+
+        verseModal.classList.remove(
+            'flex'
+        )
+    }
+)
+
+document
+    .getElementById('logoutBtn')
+    .addEventListener(
+        'click',
+        async () => {
+
+            await supabase.auth.signOut()
+
+            window.location.href =
+                '/admin/login.html'
+        }
+    )
+
+await checkAdmin()
+
+await loadVerses()
+
+</script>
+
+</body>
+  </html>
