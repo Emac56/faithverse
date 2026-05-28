@@ -2,6 +2,7 @@
 # Handles public prayer request submissions.
 # This is a PUBLIC API — no login required.
 
+from bleach import clean
 from app import db
 from app.models.prayer_request import PrayerRequest
 from app.models.website_visit import WebsiteVisit
@@ -43,9 +44,9 @@ def validate_prayer_submission(data):
     """
     errors = []
 
-    name    = data.get('name', '').strip()
+    name    = clean(data.get('name', '').strip())
     title   = data.get('prayer_title', '').strip()
-    message = data.get('prayer_message', '').strip()
+    message = clean(data.get('prayer_message', '').strip())
 
     if not name:
         errors.append('Your name is required.')
@@ -93,9 +94,9 @@ def submit_prayer(data):
     # the visitor may not have an account.
     prayer = PrayerRequest(
         user_id=None,
-	submitted_name=data.get('name', '').strip(),
-        title=data.get('prayer_title', '').strip(),
-        message=data.get('prayer_message', '').strip(),
+        submitted_name=clean(data.get('name', '').strip()),
+        title=clean(data.get('prayer_title', '').strip()),
+        message=clean(data.get('prayer_message', '').strip()),
         status='pending'   # Always starts as pending
     )
 
