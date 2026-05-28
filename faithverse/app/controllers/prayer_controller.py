@@ -1,6 +1,3 @@
-# app/controllers/prayer_controller.py
-# Handles public prayer request submissions.
-# This is a PUBLIC API — no login required.
 
 from bleach import clean as _bleach_clean
 from app import db
@@ -98,9 +95,14 @@ def submit_prayer(data):
     # the visitor may not have an account.
     prayer = PrayerRequest(
         user_id=None,
+<<<<<<< HEAD
         submitted_name=sanitize(data.get('name', '')),
         title=sanitize(data.get('prayer_title', '')),
         message=sanitize(data.get('prayer_message', '')),
+=======
+        title=data.get('prayer_title', '').strip(),
+        message=data.get('prayer_message', '').strip(),
+>>>>>>> parent of f0c0071 (Merge pull request #1 from Emac56/fixingSomeBugs)
         status='pending'   # Always starts as pending
     )
 
