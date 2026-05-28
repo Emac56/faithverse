@@ -249,7 +249,8 @@ def update_prayer_status(prayer_id, new_status):
 
     except Exception as e:
         db.session.rollback()
-        return False, 'Something went wrong. Please try again.'
+        return False, f'Database error: {str(e)}'
+
 
 def delete_user(user_id):
     """
@@ -284,7 +285,7 @@ def delete_user(user_id):
 
     except Exception as e:
         db.session.rollback()
-        return False, 'Something went wrong. Please try again.'
+        return False, f'Database error: {str(e)}'
 
 
 def promote_user(user_id):
@@ -309,5 +310,4 @@ def promote_user(user_id):
 
     except Exception as e:
         db.session.rollback()
-        return False, 'Something went wrong. Please try again.'
-
+        return False, str(e)

@@ -17,7 +17,6 @@ build/
 # Database files
 *.db
 *.sqlite
-cookies.txt
 
 # OS files
 .DS_Store

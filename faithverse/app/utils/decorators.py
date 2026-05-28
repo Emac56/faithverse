@@ -2,9 +2,10 @@
 # Custom route protection decorators.
 # Use these to restrict access based on user roles.
 
-from flask import abort, render_template, flash, redirect, url_for
 from functools import wraps
+from flask import flash, redirect, url_for, abort
 from flask_login import current_user
+
 
 def admin_required(f):
     """

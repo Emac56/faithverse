@@ -2,7 +2,6 @@
 # Handles all public-facing pages.
 # No login required for any of these routes.
 
-from app.controllers.prayer_controller import log_visit
 from flask import Blueprint, render_template
 from app.models.prayer_request import PrayerRequest
 from app.models.website_visit import WebsiteVisit
@@ -10,6 +9,19 @@ from app import db
 from flask import request as flask_request
 
 public_bp = Blueprint('public', __name__)
+
+
+def _log_visit():
+    """Silently record a page visit for analytics. Never crashes the page."""
+    try:
+        visit = WebsiteVisit(
+            ip_address=flask_request.remote_addr,
+            user_agent=flask_request.user_agent.string
+        )
+        db.session.add(visit)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
 
 
 def _footer_counts():
@@ -33,7 +45,7 @@ def index():
     GET / — Public homepage.
     Template: templates/public/index.html
     """
-    log_visit()
+    _log_visit()
     return render_template('public/index.html', **_footer_counts())
 
 
@@ -44,7 +56,7 @@ def index():
 @public_bp.route('/about')
 def about():
     """GET /about — About page."""
-    log_visit()
+    _log_visit()
     return render_template('public/about.html', **_footer_counts())
 
 
@@ -55,7 +67,7 @@ def about():
 @public_bp.route('/contact')
 def contact():
     """GET /contact — Contact page."""
-    log_visit()
+    _log_visit()
     return render_template('public/contact.html', **_footer_counts())
 
 
@@ -69,7 +81,7 @@ def prayer_wall():
     GET /prayer-wall — Shows all approved and answered prayers.
     Pending prayers are NOT shown — they need admin approval first.
     """
-    log_visit()
+    _log_visit()
 
     try:
         prayers = PrayerRequest.query\
