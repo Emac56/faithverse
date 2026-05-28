@@ -27,6 +27,12 @@ def _is_ajax():
     token = request.headers.get('X-CSRFToken')
     return bool(token and token == session.get('_csrf_token'))
 
+def _validate_csrf_token():
+    """Check CSRF token from regular form POSTs."""
+    from flask import session, abort
+    token = request.form.get('_csrf_token')
+    if not token or token != session.get('_csrf_token'):
+        abort(403)
 
 # ---------------------------------------------------------------
 # DASHBOARD HOME
@@ -110,6 +116,9 @@ def list_users():
 @admin_required
 def promote(user_id):
     """Promote a user to admin. Supports both AJAX and form POST."""
+    if not _is_ajax():  # If it's a regular form POST
+        _validate_csrf_token()  # Check the token
+    
     success, message = promote_user(user_id)
 
     if _is_ajax():
@@ -127,6 +136,9 @@ def promote(user_id):
 @admin_required
 def remove_user_page(user_id):
     """Delete a user. Supports both AJAX and form POST."""
+    if not _is_ajax():
+        _validate_csrf_token()
+    
     success, message = delete_user(user_id)
 
     if _is_ajax():
@@ -161,6 +173,9 @@ def list_prayers():
 @admin_required
 def approve_prayer(prayer_id):
     """Approve a prayer. Supports AJAX and form POST."""
+    if not _is_ajax():
+        _validate_csrf_token()
+    
     success, message = update_prayer_status(prayer_id, 'approved')
 
     if _is_ajax():
@@ -178,6 +193,9 @@ def approve_prayer(prayer_id):
 @admin_required
 def answer_prayer(prayer_id):
     """Mark a prayer as answered. Supports AJAX and form POST."""
+    if not _is_ajax():
+        _validate_csrf_token()
+    
     success, message = update_prayer_status(prayer_id, 'answered')
 
     if _is_ajax():
@@ -217,7 +235,6 @@ def delete_prayer(prayer_id):
         }), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-
+        return False, 'Something went wrong. Please try again.'
 
 

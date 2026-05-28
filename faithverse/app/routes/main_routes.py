@@ -1,6 +1,7 @@
 # app/routes/main_routes.py — STABILIZED
 # Handles: health check, /admin redirect, global error handlers.
 
+from flask import  render_template
 from flask import Blueprint, jsonify, redirect, url_for
 from flask_login import current_user
 
@@ -47,8 +48,7 @@ def health_check():
 
 @main_bp.app_errorhandler(403)
 def forbidden(e):
-    return jsonify({'error': 'Forbidden', 'message': 'Access denied.'}), 403
-
+    return render_template('public/403.html'), 403
 
 @main_bp.app_errorhandler(401)
 def unauthorized(e):
