@@ -2,12 +2,16 @@
 # Handles public prayer request submissions.
 # This is a PUBLIC API — no login required.
 
-from bleach import clean
+from bleach import clean as _bleach_clean
 from app import db
 from app.models.prayer_request import PrayerRequest
 from app.models.website_visit import WebsiteVisit
 from flask import request
 
+
+
+def sanitize(text):
+    return _bleach_clean(str(text or ''), tags=[], strip=True).strip()
 
 def log_visit():
     """
@@ -44,9 +48,9 @@ def validate_prayer_submission(data):
     """
     errors = []
 
-    name    = clean(data.get('name', '').strip())
-    title   = data.get('prayer_title', '').strip()
-    message = clean(data.get('prayer_message', '').strip())
+    name    = sanitize(data.get('name', ''))
+    title   = sanitize(data.get('prayer_title', ''))
+    message = sanitize(data.get('prayer_message', ''))
 
     if not name:
         errors.append('Your name is required.')
@@ -94,9 +98,9 @@ def submit_prayer(data):
     # the visitor may not have an account.
     prayer = PrayerRequest(
         user_id=None,
-        submitted_name=clean(data.get('name', '').strip()),
-        title=clean(data.get('prayer_title', '').strip()),
-        message=clean(data.get('prayer_message', '').strip()),
+        submitted_name=sanitize(data.get('name', '')),
+        title=sanitize(data.get('prayer_title', '')),
+        message=sanitize(data.get('prayer_message', '')),
         status='pending'   # Always starts as pending
     )
 
@@ -110,7 +114,7 @@ def submit_prayer(data):
 
         return {
             'success': True,
-            'message': 'Prayer request submitted successfully. We will pray for you! 🙏',
+            'message': 'Prayer request submitted successfully. We will pray for you! †',
             'data': {
                 'id':     prayer.id,
                 'title':  prayer.title,
