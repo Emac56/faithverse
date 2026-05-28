@@ -22,8 +22,10 @@ dashboard_bp = Blueprint('dashboard', __name__)
 
 
 def _is_ajax():
-    """Returns True if the request came from JS Fetch (has CSRF token header)."""
-    return bool(request.headers.get('X-CSRFToken'))
+    """Returns True if the request came from JS Fetch AND has a valid CSRF token."""
+    from flask import session
+    token = request.headers.get('X-CSRFToken')
+    return bool(token and token == session.get('_csrf_token'))
 
 
 # ---------------------------------------------------------------
@@ -216,4 +218,6 @@ def delete_prayer(prayer_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
 
