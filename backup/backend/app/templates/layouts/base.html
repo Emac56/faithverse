@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PAGE TITLE -->
+  <!-- block title lets child templates override the title -->
+  <title>{% block title %}FaithVerse Admin{% endblock %} — FaithVerse</title>
+
+  <!-- TAILWIND CSS CDN -->
+  <!-- No install needed. Tailwind loads directly from the internet. -->
+  <!-- Make sure your phone has internet when developing. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="csrf-token" content="{{ session.get('_csrf_token', '') }}" />
+  <!-- CUSTOM CSS -->
+  <!-- url_for('static', ...) generates the correct URL for static files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" />
+
+  <!-- TAILWIND CUSTOM CONFIG -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50:  '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- block head lets child templates add extra CSS/JS in the head -->
+  {% block head %}{% endblock %}
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- ============================================================
+       MAIN LAYOUT WRAPPER
+       flex → sidebar and content sit side by side on desktop
+       ============================================================ -->
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR (desktop — always visible) -->
+    {% include 'partials/sidebar.html' %}
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+      <!-- NAVBAR (top bar) -->
+      {% include 'partials/navbar.html' %}
+
+      <!-- PAGE CONTENT -->
+      <!-- overflow-y-auto makes this section scrollable independently -->
+      <main class="flex-1 overflow-y-auto bg-gray-100 p-6">
+
+        <!-- FLASH MESSAGES -->
+        {% include 'partials/alerts.html' %}
+
+        <!-- PAGE HEADER -->
+        {% block page_header %}{% endblock %}
+
+        <!-- MAIN PAGE CONTENT -->
+        <!-- Child templates fill this block with their content -->
+        {% block content %}{% endblock %}
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- MOBILE SIDEBAR OVERLAY -->
+  <!-- Clicking this dark overlay closes the mobile sidebar -->
+  <div id="sidebar-overlay"
+       class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden lg:hidden"
+       onclick="toggleSidebar()">
+  </div>
+
+  <!-- GLOBAL JAVASCRIPT -->
+  <!-- Load JS files in order — dependencies first -->
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

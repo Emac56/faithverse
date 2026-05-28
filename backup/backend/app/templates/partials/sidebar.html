@@ -1,0 +1,110 @@
+<!-- partials/sidebar.html -->
+<!-- Reusable sidebar navigation included in base.html -->
+
+<!--
+  id="sidebar" — used by JavaScript to show/hide on mobile
+  translate-x-0 / -translate-x-full — CSS classes to slide in/out
+  lg:translate-x-0 — always visible on large screens (desktop)
+-->
+<aside id="sidebar"
+       class="fixed lg:static inset-y-0 left-0 z-30
+              w-64 bg-gray-900 text-white
+              transform -translate-x-full lg:translate-x-0
+              transition-transform duration-300 ease-in-out
+              flex flex-col">
+
+  <!-- LOGO / BRAND -->
+  <div class="flex items-center justify-center h-16 bg-gray-800 border-b border-gray-700">
+    <span class="text-2xl mr-2">🕌</span>
+    <span class="text-xl font-bold text-white">FaithVerse</span>
+  </div>
+
+  <!-- ADMIN BADGE -->
+  <div class="px-4 py-3 bg-gray-800 border-b border-gray-700">
+    <p class="text-xs text-gray-400 uppercase tracking-wide">Admin Panel</p>
+    <!--
+      current_user is available in ALL templates automatically
+      because Flask-Login injects it into the template context.
+    -->
+    <p class="text-sm font-medium text-white mt-1">
+      👤 {{ current_user.username }}
+    </p>
+  </div>
+
+  <!-- NAVIGATION LINKS -->
+  <!--
+    request.endpoint holds the current route name.
+    e.g. 'dashboard.dashboard_home', 'dashboard.list_users'
+
+    We compare it to know which link is "active"
+    so we can highlight it differently.
+  -->
+  <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+
+    <!-- Dashboard -->
+    <a href="{{ url_for('dashboard.dashboard_home') }}"
+       class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+              {% if request.endpoint == 'dashboard.dashboard_home' %}
+                bg-blue-600 text-white
+              {% else %}
+                text-gray-300 hover:bg-gray-700 hover:text-white
+              {% endif %}">
+      <span class="mr-3 text-lg">📊</span>
+      Dashboard
+    </a>
+
+    <!-- Users -->
+    <a href="{{ url_for('dashboard.list_users') }}"
+       class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+              {% if request.endpoint == 'dashboard.list_users' %}
+                bg-blue-600 text-white
+              {% else %}
+                text-gray-300 hover:bg-gray-700 hover:text-white
+              {% endif %}">
+      <span class="mr-3 text-lg">👥</span>
+      Users
+    </a>
+
+    <!-- Prayer Requests -->
+	<a href="{{ url_for('dashboard.list_prayers') }}"
+       class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+              {% if request.endpoint == 'dashboard.list_prayers' %}
+                bg-blue-600 text-white
+              {% else %}
+                text-gray-300 hover:bg-gray-700 hover:text-white
+              {% endif %}">
+      <span class="mr-3 text-lg">🙏</span>
+      Prayer Requests
+    </a>
+
+    <!-- Analytics -->
+    <a href="{{ url_for('dashboard.analytics_page') }}"
+       class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+              {% if request.endpoint == 'dashboard.analytics_page' %}
+                bg-blue-600 text-white
+              {% else %}
+                text-gray-300 hover:bg-gray-700 hover:text-white
+              {% endif %}">
+      <span class="mr-3 text-lg">📈</span>
+      Analytics
+    </a>
+
+    <!-- DIVIDER -->
+    <div class="border-t border-gray-700 my-3"></div>
+
+    <!-- Logout -->
+    <a href="{{ url_for('auth.logout') }}"
+       class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium
+              text-red-400 hover:bg-red-900 hover:text-red-300 transition-colors">
+      <span class="mr-3 text-lg">🚪</span>
+      Logout
+    </a>
+
+  </nav>
+
+  <!-- SIDEBAR FOOTER -->
+  <div class="px-4 py-3 bg-gray-800 border-t border-gray-700">
+    <p class="text-xs text-gray-500 text-center">FaithVerse v1.0.0</p>
+  </div>
+
+</aside>

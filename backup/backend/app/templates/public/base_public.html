@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+       PAGE TITLE
+       Child templates override this block to set their own title.
+
+       Example: Title Block Goes Heres}-->
+
+  <title>{% block title %}FaithVerse{% endblock %} — Where Faith Connects</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="{% block meta_description %}FaithVerse — A community of prayer and faith. Submit your prayer requests and join thousands in worship.{% endblock %}" />
+  <meta name="theme-color" content="#7c3aed" />
+
+  <!-- Open Graph (for sharing on social media) -->
+  <meta property="og:title"       content="{% block og_title %}FaithVerse{% endblock %}" />
+  <meta property="og:description" content="Where Faith Connects" />
+  <meta property="og:type"        content="website" />
+
+  <!-- ============================================================
+       FONTS
+       Crimson Pro: elegant serif for headings
+       DM Sans:     clean sans-serif for body text
+       Loaded from Google Fonts CDN.
+       ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+       TAILWIND CSS CDN
+       Same Tailwind as the admin dashboard.
+       The violet config here is ONLY for public pages.
+       ============================================================ -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind custom colors for public website
+    // These are available as Tailwind classes: text-violet-*, bg-violet-*, etc.
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            violet: {
+              50:  '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95'
+            }
+          },
+          fontFamily: {
+            display: ['"Crimson Pro"', 'Georgia', 'serif'],
+            body:    ['"DM Sans"', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- PUBLIC WEBSITE CSS -->
+  <!-- url_for('static', ...) generates the correct Flask static URL -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}" />
+
+  <!-- block head: child templates can add extra CSS/JS here -->
+  {% block head %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAVIGATION BAR
+       Fixed to the top. Violet brand. Responsive hamburger on mobile.
+       ============================================================ -->
+  <nav class="public-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+
+      <!-- LOGO -->
+      <a href="{{ url_for('public.index') }}" class="nav-logo" aria-label="FaithVerse Home">
+        <!-- Cross / Faith icon -->
+        <div class="logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M2 12h20" />
+          </svg>
+        </div>
+        FaithVerse
+      </a>
+
+      <!-- DESKTOP NAV LINKS -->
+      <ul class="nav-links" role="list">
+        <li><a href="{{ url_for('public.index') }}">Home</a></li>
+        <li><a href="{{ url_for('public.about') }}">About</a></li>
+        <li><a href="{{ url_for('public.prayer_wall') }}">Prayer Wall</a></li>
+        <li><a href="{{ url_for('public.contact') }}">Contact</a></li>
+        <li>
+          <a href="{{ url_for('public.prayer_wall') }}#submit" class="nav-cta">
+            Submit Prayer
+          </a>
+        </li>
+      </ul>
+
+      <!-- HAMBURGER BUTTON (mobile only) -->
+      <!-- onclick calls toggleMobileMenu() from public.js -->
+      <button class="nav-hamburger"
+              id="nav-hamburger"
+              onclick="toggleMobileMenu()"
+              aria-label="Toggle menu"
+              aria-expanded="false"
+              aria-controls="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       MOBILE MENU DRAWER
+       Hidden by default. Shown when hamburger is clicked.
+       ============================================================ -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile menu">
+    <a href="{{ url_for('public.index') }}">Home</a>
+    <a href="{{ url_for('public.about') }}">About</a>
+    <a href="{{ url_for('public.prayer_wall') }}">Prayer Wall</a>
+    <a href="{{ url_for('public.contact') }}">Contact</a>
+    <a href="{{ url_for('public.prayer_wall') }}#submit" style="color: var(--violet-700); font-weight: 700;">
+      Submit a Prayer Request
+    </a>
+  </div>
+
+  <!-- ============================================================
+       PAGE WRAPPER
+       All page content lives inside here.
+       ============================================================ -->
+  <div class="page-wrapper">
+
+    <!-- FLASH MESSAGES -->
+    <!-- Flask's flash() function sends messages here -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container" aria-live="polite">
+          {% for category, message in messages %}
+            <div class="flash-alert {{ category }}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- ============================================================
+         PAGE CONTENT
+         Child templates fill this block with their own content.
+         ============================================================ -->
+    <main class="page-content" id="main-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="public-footer" role="contentinfo">
+      <div class="footer-container">
+
+        <div class="footer-top">
+          <!-- Brand -->
+          <div>
+            <div class="footer-brand">
+              <!-- Inline cross icon -->
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                   stroke="#8b5cf6" stroke-width="2.5"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M2 12h20"/>
+              </svg>
+              FaithVerse
+            </div>
+            <p class="footer-tagline">Where Faith Connects</p>
+          </div>
+
+          <!-- Footer nav links -->
+          <ul class="footer-links" role="list">
+            <li><a href="{{ url_for('public.index') }}">Home</a></li>
+            <li><a href="{{ url_for('public.about') }}">About</a></li>
+            <li><a href="{{ url_for('public.prayer_wall') }}">Prayer Wall</a></li>
+            <li><a href="{{ url_for('public.contact') }}">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; {{ now.year if now else '2025' }} FaithVerse. All rights reserved.</p>
+        </div>
+
+      </div>
+    </footer>
+
+  </div><!-- end .page-wrapper -->
+
+  <!-- ============================================================
+       GLOBAL PUBLIC JS
+       Loaded at the bottom so HTML is fully parsed first.
+       ============================================================ -->
+  <script src="{{ url_for('static', filename='js/public.js') }}"></script>
+
+  <!-- block scripts: child templates add page-specific JS here -->
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>

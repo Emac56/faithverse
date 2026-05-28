@@ -1,0 +1,247 @@
+<!-- partials/sidebar.html -->
+
+<aside id="sidebar"
+       class="fixed lg:static inset-y-0 left-0 z-40
+              w-72 bg-gradient-to-b from-violet-700 to-violet-800
+              text-white shadow-2xl
+              transform -translate-x-full lg:translate-x-0
+              transition-transform duration-300 ease-in-out
+              flex flex-col">
+
+  <!-- LOGO -->
+  <div class="h-20 flex items-center px-6 border-b border-violet-600/70">
+
+    <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md
+                flex items-center justify-center border border-white/10 shadow-lg">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-6 h-6 text-white"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           stroke-width="2">
+
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 4.5C7.5 7 5 10 5 13.5A7 7 0 0012 20a7 7 0 007-6.5C19 10 16.5 7 12 4.5z" />
+
+      </svg>
+
+    </div>
+
+    <div class="ml-4">
+
+      <h1 class="text-2xl font-black tracking-tight">
+        FaithVerse
+      </h1>
+
+      <p class="text-sm text-violet-200 mt-0.5">
+        Admin Dashboard
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- ADMIN CARD -->
+  <div class="px-5 py-5 border-b border-violet-600/70">
+
+    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+
+      <div class="flex items-center gap-3">
+
+        <!-- ADMIN ICON -->
+        <div class="w-12 h-12 rounded-2xl bg-white/10
+                    flex items-center justify-center border border-white/10">
+
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="w-6 h-6 text-white"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor"
+               stroke-width="2">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+          </svg>
+
+        </div>
+
+        <div class="min-w-0">
+
+          <p class="text-xs uppercase tracking-wider text-violet-200 font-semibold">
+            Logged in as
+          </p>
+
+          <p class="text-sm font-bold truncate mt-1">
+            {{ current_user.username }}
+          </p>
+
+          <div class="inline-flex items-center px-2.5 py-1 rounded-full
+                      bg-white/10 text-violet-100 text-xs font-semibold mt-2">
+
+            {{ current_user.role | capitalize }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav class="flex-1 overflow-y-auto px-4 py-5 space-y-2">
+
+    <!-- DASHBOARD -->
+    <a href="{{ url_for('dashboard.dashboard_home') }}"
+       class="group flex items-center gap-3 px-4 py-3 rounded-2xl
+              text-sm font-semibold transition-all duration-200
+
+       {% if request.endpoint == 'dashboard.dashboard_home' %}
+         bg-white text-violet-700 shadow-lg
+       {% else %}
+         text-violet-100 hover:bg-white/10 hover:text-white
+       {% endif %}">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-5 h-5"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           stroke-width="2">
+
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m-4 0h8" />
+
+      </svg>
+
+      Dashboard
+
+    </a>
+
+    <!-- USERS -->
+    <a href="{{ url_for('dashboard.list_users') }}"
+       class="group flex items-center gap-3 px-4 py-3 rounded-2xl
+              text-sm font-semibold transition-all duration-200
+
+       {% if request.endpoint == 'dashboard.list_users' %}
+         bg-white text-violet-700 shadow-lg
+       {% else %}
+         text-violet-100 hover:bg-white/10 hover:text-white
+       {% endif %}">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-5 h-5"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           stroke-width="2">
+
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M17 20h5V4H2v16h5m10 0v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6" />
+
+      </svg>
+
+      Users
+
+    </a>
+
+    <!-- PRAYERS -->
+    <a href="{{ url_for('dashboard.list_prayers') }}"
+       class="group flex items-center gap-3 px-4 py-3 rounded-2xl
+              text-sm font-semibold transition-all duration-200
+
+       {% if request.endpoint == 'dashboard.list_prayers' %}
+         bg-white text-violet-700 shadow-lg
+       {% else %}
+         text-violet-100 hover:bg-white/10 hover:text-white
+       {% endif %}">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-5 h-5"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           stroke-width="2">
+
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8 10h.01M12 10h.01M16 10h.01M9 16h6" />
+
+      </svg>
+
+      Prayer Requests
+
+    </a>
+
+    <!-- ANALYTICS -->
+    <a href="{{ url_for('dashboard.analytics_page') }}"
+       class="group flex items-center gap-3 px-4 py-3 rounded-2xl
+              text-sm font-semibold transition-all duration-200
+
+       {% if request.endpoint == 'dashboard.analytics_page' %}
+         bg-white text-violet-700 shadow-lg
+       {% else %}
+         text-violet-100 hover:bg-white/10 hover:text-white
+       {% endif %}">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-5 h-5"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           stroke-width="2">
+
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M11 3v18m4-14v14m4-10v10M7 13v8" />
+
+      </svg>
+
+      Analytics
+
+    </a>
+
+  </nav>
+
+  <!-- FOOTER -->
+  <div class="p-4 border-t border-violet-600/70">
+
+    <a href="{{ url_for('auth.logout') }}"
+       class="flex items-center justify-center gap-3 px-4 py-3 rounded-2xl
+              bg-red-500/10 border border-red-400/20
+              text-red-100 text-sm font-semibold
+              hover:bg-red-500/20 transition-all duration-200">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-5 h-5"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           stroke-width="2">
+
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M17 16l4-4m0 0l-4-4m4 4H7" />
+
+      </svg>
+
+      Logout
+
+    </a>
+
+    <p class="text-center text-xs text-violet-300 mt-4">
+      FaithVerse v1.0.0
+    </p>
+
+  </div>
+
+</aside>
+

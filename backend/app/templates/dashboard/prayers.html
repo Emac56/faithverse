@@ -1,0 +1,215 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Prayer Requests{% endblock %}
+{% block navbar_title %}Prayer Requests{% endblock %}
+
+{% block content %}
+
+<div id="prayers-header" class="mb-10">
+  <h2 class="text-4xl md:text-5xl font-black tracking-tight text-violet-950 leading-tight">
+    Prayer Requests
+  </h2>
+  <p class="text-slate-600 text-base md:text-lg mt-4 leading-relaxed max-w-2xl">
+    Review, manage, and moderate submitted prayer requests in a clean and organized view.
+  </p>
+</div>
+
+<div id="filter-tabs" class="mb-6 flex flex-wrap gap-2">
+  <a href="{{ url_for('dashboard.list_prayers') }}"
+     class="px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200
+            {% if not status_filter %}
+            bg-violet-700 text-white shadow-sm
+            {% else %}
+            bg-white text-slate-700 border border-violet-200 hover:bg-violet-50
+            {% endif %}">
+    All ({{ prayers|length }})
+  </a>
+
+  <a href="{{ url_for('dashboard.list_prayers', status='pending') }}"
+     class="px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200
+            {% if status_filter == 'pending' %}
+            bg-amber-500 text-white shadow-sm
+            {% else %}
+            bg-white text-slate-700 border border-violet-200 hover:bg-violet-50
+            {% endif %}">
+    Pending
+  </a>
+
+  <a href="{{ url_for('dashboard.list_prayers', status='approved') }}"
+     class="px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200
+            {% if status_filter == 'approved' %}
+            bg-violet-700 text-white shadow-sm
+            {% else %}
+            bg-white text-slate-700 border border-violet-200 hover:bg-violet-50
+            {% endif %}">
+    Approved
+  </a>
+
+  <a href="{{ url_for('dashboard.list_prayers', status='answered') }}"
+     class="px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200
+            {% if status_filter == 'answered' %}
+            bg-green-600 text-white shadow-sm
+            {% else %}
+            bg-white text-slate-700 border border-violet-200 hover:bg-violet-50
+            {% endif %}">
+    Answered
+  </a>
+</div>
+
+<div id="prayers-card" class="bg-white rounded-3xl border border-violet-200 shadow-sm overflow-hidden">
+
+  <div class="px-6 md:px-8 py-6 border-b border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <h3 class="text-2xl md:text-3xl font-black text-violet-950">
+        Prayer Requests ({{ prayers|length }})
+      </h3>
+      <p class="text-sm text-slate-600 mt-1">
+        Search, review, and update prayer request statuses.
+      </p>
+    </div>
+
+    <input
+      type="text"
+      id="prayer-search"
+      placeholder="Search prayers..."
+      oninput="searchTable('prayer-table', this.value)"
+      class="w-full md:w-80 px-4 py-3 rounded-2xl border border-violet-200 bg-violet-50/40 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-violet-200 focus:border-violet-400 transition-all duration-300"
+    />
+  </div>
+
+  <div class="overflow-x-auto">
+    <table id="prayer-table" class="w-full min-w-full">
+      <thead class="bg-violet-100">
+        <tr>
+          <th class="px-4 md:px-7 py-5 text-left text-xs font-black uppercase tracking-[0.15em] text-violet-900">
+            ID
+          </th>
+          <th class="px-4 md:px-7 py-5 text-left text-xs font-black uppercase tracking-[0.15em] text-violet-900">
+            Title
+          </th>
+          <th class="px-4 md:px-7 py-5 text-left text-xs font-black uppercase tracking-[0.15em] text-violet-900">
+            Submitted By
+          </th>
+          <th class="px-4 md:px-7 py-5 text-left text-xs font-black uppercase tracking-[0.15em] text-violet-900">
+            Status
+          </th>
+          <th class="px-4 md:px-7 py-5 text-left text-xs font-black uppercase tracking-[0.15em] text-violet-900">
+            Date
+          </th>
+          <th class="px-4 md:px-7 py-5 text-left text-xs font-black uppercase tracking-[0.15em] text-violet-900">
+            Actions
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-slate-200">
+        {% for prayer in prayers %}
+        <tr class="hover:bg-violet-50 transition duration-200">
+          <td class="px-4 md:px-7 py-5 text-sm font-medium text-slate-500">
+            {{ prayer.id }}
+          </td>
+
+          <td class="px-4 md:px-7 py-5">
+            <div class="flex flex-col gap-1">
+              <p class="font-bold text-slate-900">
+                {{ prayer.title[:40] }}{% if prayer.title|length > 40 %}...{% endif %}
+              </p>
+              <p class="text-sm text-slate-600">
+                {% if prayer.message %}
+                  {{ prayer.message[:70] }}{% if prayer.message|length > 70 %}...{% endif %}
+                {% else %}
+                  No message provided
+                {% endif %}
+              </p>
+            </div>
+          </td>
+
+          <td class="px-4 md:px-7 py-5 text-sm font-medium text-slate-700">
+            {{ prayer.submitted_by or 'Anonymous' }}
+          </td>
+
+          <td class="px-4 md:px-7 py-5">
+            <span class="inline-flex px-3 py-1.5 rounded-full text-xs font-black
+              {% if prayer.status == 'pending' %}
+              bg-amber-100 text-amber-900
+              {% elif prayer.status == 'approved' %}
+              bg-violet-100 text-violet-900
+              {% else %}
+              bg-green-100 text-green-900
+              {% endif %}">
+              {{ prayer.status }}
+            </span>
+          </td>
+
+          <td class="px-4 md:px-7 py-5 text-sm text-slate-700">
+            {{ prayer.created_at[:10] if prayer.created_at else 'N/A' }}
+          </td>
+
+          <td class="px-4 md:px-7 py-5">
+            <div class="flex flex-wrap gap-2">
+              {% if prayer.status == 'pending' %}
+              <button
+                onclick="approvePrayer({{ prayer.id }}, this)"
+                class="px-4 py-2 rounded-xl text-xs font-bold bg-violet-100 text-violet-900 border border-violet-300 hover:bg-violet-200 hover:scale-105 transition-all duration-200">
+                Approve
+              </button>
+              {% endif %}
+
+              {% if prayer.status != 'answered' %}
+              <button
+                onclick="answerPrayer({{ prayer.id }}, this)"
+                class="px-4 py-2 rounded-xl text-xs font-bold bg-green-100 text-green-900 border border-green-300 hover:bg-green-200 hover:scale-105 transition-all duration-200">
+                Mark Answered
+              </button>
+              {% endif %}
+
+              <button
+                onclick="deletePrayer({{ prayer.id }}, this)"
+                class="px-4 py-2 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-300 hover:bg-red-200 hover:scale-105 transition-all duration-200">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="px-6 py-12 text-center text-slate-500">
+            No prayer requests found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script>
+  gsap.fromTo(
+    "#prayers-header",
+    { opacity: 0, y: -20 },
+    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", clearProps: "all" }
+  );
+
+  gsap.fromTo(
+    "#filter-tabs",
+    { opacity: 0, y: 15 },
+    { opacity: 1, y: 0, duration: 0.45, delay: 0.08, ease: "power2.out", clearProps: "all" }
+  );
+
+  gsap.fromTo(
+    "#prayers-card",
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.55, delay: 0.12, ease: "power2.out", clearProps: "all" }
+  );
+
+  gsap.fromTo(
+    "#prayers-card tbody tr",
+    { opacity: 0, y: 10 },
+    { opacity: 1, y: 0, duration: 0.3, stagger: 0.03, delay: 0.2, ease: "power2.out", clearProps: "all" }
+  );
+</script>
+
+{% endblock %}
+
+

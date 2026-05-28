@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}FaithVerse{% endblock %} - Where Faith Connects</title>
+  <meta name="description" content="{% block meta_description %}FaithVerse community of prayer.{% endblock %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { violet: { 50:'#f5f3ff',100:'#ede9fe',200:'#ddd6fe',300:'#c4b5fd',400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9',800:'#5b21b6',900:'#4c1d95' } }, fontFamily: { display: ['"Crimson Pro"','Georgia','serif'], body: ['"DM Sans"','system-ui','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}" />
+  {% block head %}{% endblock %}
+</head>
+<body>
+  {% include 'partials/public_navbar.html' %}
+  <div class="page-wrapper">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container" aria-live="polite">
+          {% for category, message in messages %}
+            <div class="flash-alert {{ category }}" role="alert">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <main class="page-content" id="main-content">
+      {% block content %}{% endblock %}
+    </main>
+    {% include 'partials/public_footer.html' %}
+  </div>
+  <script src="{{ url_for('static', filename='js/public.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

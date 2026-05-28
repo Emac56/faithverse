@@ -1,0 +1,594 @@
+<!-- templates/public/index.html -->
+{% extends "layouts/base_public.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block meta_description %}
+FaithVerse — Submit your prayer request and let the community pray alongside you.
+{% endblock %}
+
+{% block content %}
+
+<div class="relative overflow-x-hidden bg-gradient-to-b from-violet-50 via-white to-white">
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-violet-700 via-violet-600 to-violet-800">
+
+    <!-- BACKGROUND -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+
+      <!-- TOP GLOW -->
+      <div class="absolute -top-24 -left-24 h-60 w-60 sm:h-72 sm:w-72 rounded-full bg-white/10 blur-3xl"></div>
+
+      <!-- RIGHT GLOW -->
+      <div class="absolute right-0 top-1/2 h-72 w-72 sm:h-80 sm:w-80 -translate-y-1/2 rounded-full bg-violet-300/10 blur-3xl"></div>
+
+      <!-- BOTTOM GLOW -->
+      <div class="absolute bottom-0 left-1/2 h-56 w-56 sm:h-64 sm:w-64 -translate-x-1/2 rounded-full bg-fuchsia-300/10 blur-3xl"></div>
+
+    </div>
+
+    <!-- HERO CONTENT -->
+    <div class="relative flex min-h-[90vh] sm:min-h-[88vh] md:min-h-screen w-full items-center py-20 sm:py-24 lg:py-28">
+
+      <div class="w-full px-4 sm:px-6 md:px-8 lg:px-10">
+
+        <div class="mx-auto max-w-6xl text-center">
+
+          <!-- BADGE -->
+          <div class="hero-badge inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white backdrop-blur-sm shadow-lg shadow-violet-900/10">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-4 w-4 flex-shrink-0"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+              <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 2v20M2 12h20"/>
+
+            </svg>
+
+            <span class="truncate">
+              Community of Prayer
+            </span>
+
+          </div>
+
+          <!-- TITLE -->
+          <h1 class="hero-title mt-7 text-[2.5rem] leading-[1.05] font-black tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem]">
+
+            Bring Your Prayers,
+            <br class="hidden sm:block">
+
+            <span class="text-violet-100">
+              Find Your Faith
+            </span>
+
+          </h1>
+
+          <!-- SUBTITLE -->
+          <p class="hero-subtitle mx-auto mt-6 max-w-xs text-sm leading-7 text-violet-100 sm:max-w-2xl sm:text-lg sm:leading-8 md:max-w-3xl md:text-xl">
+
+            FaithVerse is a calm and welcoming place where people
+            can share prayer requests, encourage one another,
+            and grow together in faith.
+
+          </p>
+
+          <!-- BUTTONS -->
+          <div class="hero-buttons mx-auto mt-10 flex w-full max-w-lg flex-col gap-4 sm:flex-row sm:justify-center sm:gap-5">
+
+            <!-- PRIMARY BUTTON -->
+            <a href="{{ url_for('public.prayer_wall') }}#submit"
+               class="interactive-btn group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-2xl bg-white px-6 py-4 sm:px-8 text-sm font-bold text-violet-700 shadow-xl shadow-violet-900/10 transition-all duration-300 hover:-translate-y-1 hover:bg-violet-50 hover:shadow-2xl hover:shadow-violet-900/20 focus:outline-none focus:ring-4 focus:ring-white/30 active:scale-[0.99]">
+
+              <!-- GLOW -->
+              <span class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+
+                <span class="absolute inset-0 bg-gradient-to-r from-white/0 via-violet-100/60 to-white/0"></span>
+
+              </span>
+
+              <!-- ICON -->
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:rotate-90"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v16m8-8H4"/>
+
+              </svg>
+
+              <!-- TEXT -->
+              <span class="relative z-10">
+                Submit a Prayer
+              </span>
+
+            </a>
+
+            <!-- SECONDARY BUTTON -->
+            <a href="{{ url_for('public.prayer_wall') }}"
+               class="interactive-btn group relative inline-flex w-full sm:w-auto items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-white/10 px-6 py-4 sm:px-8 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-xl hover:shadow-violet-900/10 focus:outline-none focus:ring-4 focus:ring-white/20 active:scale-[0.99]">
+
+              <!-- OVERLAY -->
+              <span class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+
+                <span class="absolute inset-0 bg-white/5"></span>
+
+              </span>
+
+              <!-- TEXT -->
+              <span class="relative z-10">
+                View Prayer Wall
+              </span>
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FEATURES -->
+  <section class="relative py-16 sm:py-20 lg:py-24">
+
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 md:px-8 lg:px-10">
+
+      <!-- SECTION HEADING -->
+      <div class="section-heading mx-auto max-w-3xl text-center">
+
+        <div class="inline-flex items-center rounded-full bg-violet-100 px-4 py-2 text-xs sm:text-sm font-semibold text-violet-700">
+
+          What We Offer
+
+        </div>
+
+        <h2 class="mt-5 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+
+          A Community Built On Faith
+
+        </h2>
+
+        <p class="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-600 sm:text-lg sm:leading-8">
+
+          FaithVerse helps people connect through prayer,
+          encouragement, hope, and spiritual support.
+
+        </p>
+
+      </div>
+
+      <!-- CARDS -->
+      <div class="mt-14 grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 xl:grid-cols-3">
+
+        <!-- CARD -->
+        <article class="feature-card group flex h-full flex-col rounded-3xl border border-violet-100 bg-white p-6 sm:p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100/70">
+
+          <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-600 text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-6 w-6"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+              <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 0 0 0-7.78z"/>
+
+            </svg>
+
+          </div>
+
+          <h3 class="mt-6 text-xl font-bold text-slate-900">
+
+            Submit Prayer Requests
+
+          </h3>
+
+          <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
+
+            Share what is on your heart and let people
+            pray with you and encourage you.
+
+          </p>
+
+        </article>
+
+        <!-- CARD -->
+        <article class="feature-card group flex h-full flex-col rounded-3xl border border-violet-100 bg-white p-6 sm:p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100/70">
+
+          <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-600 text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-6 w-6"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+              <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+
+              <circle cx="9"
+                      cy="7"
+                      r="4"/>
+
+            </svg>
+
+          </div>
+
+          <h3 class="mt-6 text-xl font-bold text-slate-900">
+
+            Public Prayer Wall
+
+          </h3>
+
+          <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
+
+            Read prayers from the community and
+            encourage others through faith.
+
+          </p>
+
+        </article>
+
+        <!-- CARD -->
+        <article class="feature-card group flex h-full flex-col rounded-3xl border border-violet-100 bg-white p-6 sm:p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100/70">
+
+          <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-600 text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-6 w-6"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+              <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+
+            </svg>
+
+          </div>
+
+          <h3 class="mt-6 text-xl font-bold text-slate-900">
+
+            Safe & Moderated
+
+          </h3>
+
+          <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
+
+            Every request is reviewed carefully
+            to keep the community respectful and uplifting.
+
+          </p>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- STATS -->
+  <section class="bg-violet-50 py-16 sm:py-20 lg:py-24">
+
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-10">
+
+      <div class="stats-heading text-center">
+
+        <div class="inline-flex items-center rounded-full bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-violet-700 shadow-sm">
+
+          FaithVerse Community
+
+        </div>
+
+        <h2 class="mt-5 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+
+          Growing Together In Prayer
+
+        </h2>
+
+      </div>
+
+      <!-- STATS GRID -->
+      <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+        <!-- STAT -->
+        <div class="stat-card rounded-3xl border border-violet-100 bg-white p-6 sm:p-7 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100/70">
+
+          <div class="text-4xl font-black text-violet-700 sm:text-5xl">
+
+            1,000+
+
+          </div>
+
+          <p class="mt-3 text-sm font-medium text-slate-600">
+
+            Prayers Submitted
+
+          </p>
+
+        </div>
+
+        <!-- STAT -->
+        <div class="stat-card rounded-3xl border border-violet-100 bg-white p-6 sm:p-7 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100/70">
+
+          <div class="text-4xl font-black text-violet-700 sm:text-5xl">
+
+            500+
+
+          </div>
+
+          <p class="mt-3 text-sm font-medium text-slate-600">
+
+            Answered Prayers
+
+          </p>
+
+        </div>
+
+        <!-- STAT -->
+        <div class="stat-card rounded-3xl border border-violet-100 bg-white p-6 sm:p-7 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100/70">
+
+          <div class="text-4xl font-black text-violet-700 sm:text-5xl">
+
+            24/7
+
+          </div>
+
+          <p class="mt-3 text-sm font-medium text-slate-600">
+
+            Community Support
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<!-- GSAP -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<script>
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // PERFORMANCE
+  gsap.config({
+    force3D: true
+  });
+
+  // HERO BADGE
+  gsap.from(".hero-badge", {
+
+    opacity: 0,
+    y: 20,
+    duration: 0.7,
+    ease: "power2.out"
+
+  });
+
+  // HERO TITLE
+  gsap.from(".hero-title", {
+
+    opacity: 0,
+    y: 40,
+    duration: 1,
+    delay: 0.1,
+    ease: "power3.out"
+
+  });
+
+  // HERO SUBTITLE
+  gsap.from(".hero-subtitle", {
+
+    opacity: 0,
+    y: 25,
+    duration: 0.9,
+    delay: 0.2,
+    ease: "power2.out"
+
+  });
+
+  // HERO BUTTONS
+  gsap.from(".hero-buttons .interactive-btn", {
+
+    opacity: 0,
+    y: 20,
+
+    stagger: 0.12,
+
+    duration: 0.7,
+
+    delay: 0.3,
+
+    ease: "power2.out",
+
+    clearProps: "all"
+
+  });
+
+  // HERO PARALLAX
+  gsap.to(".hero-title", {
+
+    y: window.innerWidth < 768 ? 20 : 35,
+
+    ease: "none",
+
+    scrollTrigger: {
+
+      trigger: ".hero-title",
+
+      start: "top top",
+
+      end: "bottom top",
+
+      scrub: 1
+
+    }
+
+  });
+
+  // SECTION HEADINGS
+  gsap.utils.toArray(".section-heading, .stats-heading").forEach((section) => {
+
+    gsap.from(section, {
+
+      scrollTrigger: {
+
+        trigger: section,
+
+        start: "top 85%",
+
+        end: "bottom 60%",
+
+        toggleActions: "play none none reverse"
+
+      },
+
+      opacity: 0,
+
+      y: 35,
+
+      duration: 0.8,
+
+      ease: "power3.out"
+
+    });
+
+  });
+
+  // FEATURE CARDS
+  gsap.utils.toArray(".feature-card").forEach((card) => {
+
+    gsap.from(card, {
+
+      scrollTrigger: {
+
+        trigger: card,
+
+        start: "top 88%",
+
+        end: "bottom 65%",
+
+        toggleActions: "play none none reverse"
+
+      },
+
+      opacity: 0,
+
+      y: 40,
+
+      scale: 0.98,
+
+      duration: 0.7,
+
+      ease: "power3.out"
+
+    });
+
+  });
+
+  // STATS CARDS
+  gsap.utils.toArray(".stat-card").forEach((card) => {
+
+    gsap.from(card, {
+
+      scrollTrigger: {
+
+        trigger: card,
+
+        start: "top 88%",
+
+        end: "bottom 65%",
+
+        toggleActions: "play none none reverse"
+
+      },
+
+      opacity: 0,
+
+      y: 35,
+
+      scale: 0.98,
+
+      duration: 0.7,
+
+      ease: "power2.out"
+
+    });
+
+  });
+
+  // BUTTON HOVER
+  document.querySelectorAll(".interactive-btn").forEach((button) => {
+
+    button.addEventListener("mouseenter", () => {
+
+      gsap.to(button, {
+
+        y: -3,
+
+        scale: 1.01,
+
+        duration: 0.22,
+
+        ease: "power2.out",
+
+        overwrite: "auto"
+
+      });
+
+    });
+
+    button.addEventListener("mouseleave", () => {
+
+      gsap.to(button, {
+
+        y: 0,
+
+        scale: 1,
+
+        duration: 0.22,
+
+        ease: "power2.out",
+
+        overwrite: "auto"
+
+      });
+
+    });
+
+  });
+
+</script>
+
+{% endblock %}
+

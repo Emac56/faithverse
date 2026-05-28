@@ -1,0 +1,281 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Analytics{% endblock %}
+{% block navbar_title %}Analytics Overview{% endblock %}
+
+{% block content %}
+
+<div id="analytics-header" class="mb-10">
+
+  <h2 class="text-4xl md:text-5xl font-black tracking-tight text-violet-950 leading-tight">
+    Analytics Dashboard
+  </h2>
+
+  <p class="text-slate-600 text-base md:text-lg mt-4 leading-relaxed max-w-2xl">
+    Track prayer moderation activity and website visitor trends in one clean and modern dashboard.
+  </p>
+
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+  <!-- STATUS CARD -->
+  <div id="status-card"
+       class="bg-white rounded-3xl border border-violet-200 p-7 shadow-sm
+              transition-all duration-300
+              hover:shadow-2xl hover:-translate-y-1 hover:border-violet-300">
+
+    <div class="mb-7">
+
+      <h3 class="text-2xl md:text-3xl font-black text-violet-950">
+        Prayer Status Breakdown
+      </h3>
+
+      <p class="text-sm text-slate-600 mt-2">
+        Overview of pending, approved, and answered prayers.
+      </p>
+
+    </div>
+
+    <div class="space-y-6">
+
+      <!-- Pending -->
+      <div class="group">
+
+        <div class="flex items-center justify-between mb-2">
+
+          <span class="text-sm font-semibold text-slate-700">
+            Pending
+          </span>
+
+          <span class="text-sm font-black text-amber-700">
+            {{ prayer_status.pending }}
+          </span>
+
+        </div>
+
+        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+
+          <div class="progress-bar bg-gradient-to-r from-amber-300 to-amber-500 h-3 rounded-full transition-all duration-300 group-hover:brightness-110"
+               style="width: {{ (prayer_status.pending / prayer_status.total * 100)|round if prayer_status.total > 0 else 0 }}%;">
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Approved -->
+      <div class="group">
+
+        <div class="flex items-center justify-between mb-2">
+
+          <span class="text-sm font-semibold text-slate-700">
+            Approved
+          </span>
+
+          <span class="text-sm font-black text-violet-700">
+            {{ prayer_status.approved }}
+          </span>
+
+        </div>
+
+        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+
+          <div class="progress-bar bg-gradient-to-r from-violet-400 to-violet-700 h-3 rounded-full transition-all duration-300 group-hover:brightness-110"
+               style="width: {{ (prayer_status.approved / prayer_status.total * 100)|round if prayer_status.total > 0 else 0 }}%;">
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Answered -->
+      <div class="group">
+
+        <div class="flex items-center justify-between mb-2">
+
+          <span class="text-sm font-semibold text-slate-700">
+            Answered
+          </span>
+
+          <span class="text-sm font-black text-green-700">
+            {{ prayer_status.answered }}
+          </span>
+
+        </div>
+
+        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+
+          <div class="progress-bar bg-gradient-to-r from-green-300 to-green-600 h-3 rounded-full transition-all duration-300 group-hover:brightness-110"
+               style="width: {{ (prayer_status.answered / prayer_status.total * 100)|round if prayer_status.total > 0 else 0 }}%;">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- VISITORS CARD -->
+  <div id="visitors-card"
+       class="bg-white rounded-3xl border border-violet-200 p-7 shadow-sm
+              transition-all duration-300
+              hover:shadow-2xl hover:-translate-y-1 hover:border-violet-300">
+
+    <div class="mb-7">
+
+      <h3 class="text-2xl md:text-3xl font-black text-violet-950">
+        Daily Visitors
+      </h3>
+
+      <p class="text-sm text-slate-600 mt-2">
+        Website traffic over the last 7 days.
+      </p>
+
+    </div>
+
+    <div class="space-y-5">
+
+      {% for day in visitor_data %}
+
+      <div class="visitor-row p-2 rounded-2xl transition-all duration-300 hover:bg-violet-50">
+
+        <div class="flex items-center justify-between mb-2">
+
+          <span class="text-sm font-semibold text-slate-700">
+            {{ day.date }}
+          </span>
+
+          <span class="text-sm font-black text-violet-700">
+            {{ day.visitors }}
+          </span>
+
+        </div>
+
+        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+
+          <div class="progress-bar bg-gradient-to-r from-violet-400 to-violet-700 h-3 rounded-full"
+               style="width: {{ day.visitors * 10 if day.visitors * 10 < 100 else 100 }}%;">
+          </div>
+
+        </div>
+
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<script>
+
+  gsap.fromTo(
+    "#analytics-header",
+    {
+      opacity: 0,
+      y: -20
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      clearProps: "all"
+    }
+  );
+
+  gsap.fromTo(
+    "#status-card",
+    {
+      opacity: 0,
+      y: 25
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      delay: 0.05,
+      ease: "power2.out",
+      clearProps: "all"
+    }
+  );
+
+  gsap.fromTo(
+    "#visitors-card",
+    {
+      opacity: 0,
+      y: 25
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      delay: 0.1,
+      ease: "power2.out",
+      clearProps: "all"
+    }
+  );
+
+  gsap.fromTo(
+    ".progress-bar",
+    {
+      width: 0
+    },
+    {
+      duration: 1,
+      stagger: 0.08,
+      delay: 0.2,
+      ease: "power2.out",
+      clearProps: "all"
+    }
+  );
+
+  gsap.fromTo(
+    ".visitor-row",
+    {
+      opacity: 0,
+      x: -15
+    },
+    {
+      opacity: 1,
+      x: 0,
+      duration: 0.35,
+      stagger: 0.04,
+      delay: 0.25,
+      ease: "power2.out",
+      clearProps: "all"
+    }
+  );
+
+  document.querySelectorAll("#status-card, #visitors-card").forEach(card => {
+
+    card.addEventListener("mouseenter", () => {
+      gsap.to(card, {
+        y: -6,
+        duration: 0.25,
+        ease: "power2.out"
+      });
+    });
+
+    card.addEventListener("mouseleave", () => {
+      gsap.to(card, {
+        y: 0,
+        duration: 0.25,
+        ease: "power2.out"
+      });
+    });
+
+  });
+
+</script>
+
+{% endblock %}
+
+

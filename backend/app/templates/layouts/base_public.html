@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+
+  <title>
+    {% block title %}FaithVerse{% endblock %} — Where Faith Connects
+  </title>
+
+  <meta name="description"
+        content="{% block meta_description %}FaithVerse community of prayer.{% endblock %}" />
+
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect"
+        href="https://fonts.googleapis.com" />
+
+  <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin />
+
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+  <!-- TAILWIND -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+
+    tailwind.config = {
+      theme: {
+        extend: {
+
+          colors: {
+
+            violet: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95'
+            }
+
+          },
+
+          fontFamily: {
+
+            display: ['"Crimson Pro"', 'Georgia', 'serif'],
+
+            body: ['"DM Sans"', 'system-ui', 'sans-serif']
+
+          },
+
+          boxShadow: {
+
+            soft: '0 10px 35px rgba(124,58,237,0.10)'
+
+          }
+
+        }
+      }
+    }
+
+  </script>
+
+  <!-- CUSTOM CSS -->
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/public.css') }}" />
+
+  <style>
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c4b5fd;
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+  </style>
+
+  {% block head %}{% endblock %}
+
+</head>
+
+<body class="bg-gradient-to-br from-violet-50 via-white to-violet-100 text-slate-900 font-body antialiased">
+
+  <!-- WRAPPER -->
+  <div class="min-h-screen flex flex-col">
+
+    <!-- NAVBAR -->
+    {% include 'partials/public_navbar.html' %}
+
+    <!-- PAGE -->
+    <div class="flex-1 flex flex-col">
+
+      <!-- FLASH -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+          <div class="fixed top-5 right-5 z-50 space-y-3 w-[92%] sm:w-auto max-w-sm">
+
+            {% for category, message in messages %}
+
+              <div class="flash-alert px-4 py-3 rounded-2xl border shadow-soft text-sm font-medium backdrop-blur-md
+
+                {% if category == 'danger' %}
+                  bg-red-50/95 border-red-200 text-red-700
+
+                {% elif category == 'success' %}
+                  bg-green-50/95 border-green-200 text-green-700
+
+                {% else %}
+                  bg-violet-50/95 border-violet-200 text-violet-700
+
+                {% endif %}">
+
+                {{ message }}
+
+              </div>
+
+            {% endfor %}
+
+          </div>
+
+        {% endif %}
+
+      {% endwith %}
+
+      <!-- CONTENT -->
+      <main id="main-content"
+            class="flex-1 px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+
+        {% block content %}{% endblock %}
+
+      </main>
+
+      <!-- FOOTER -->
+      {% include 'partials/public_footer.html' %}
+
+    </div>
+
+  </div>
+
+  <!-- PUBLIC JS -->
+  <script src="{{ url_for('static', filename='js/public.js') }}"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+  <script>
+
+    gsap.fromTo(
+      "nav",
+      {
+        opacity: 0,
+        y: -12
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.45,
+        ease: "power2.out"
+      }
+    );
+
+    gsap.fromTo(
+      "#main-content",
+      {
+        opacity: 0,
+        y: 18
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.55,
+        delay: 0.05,
+        ease: "power2.out"
+      }
+    );
+
+    gsap.fromTo(
+      ".flash-alert",
+      {
+        opacity: 0,
+        x: 25
+      },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.45,
+        stagger: 0.06,
+        ease: "power2.out"
+      }
+    );
+
+    document.querySelectorAll(
+      ".bg-white, .rounded-2xl, .rounded-3xl"
+    ).forEach(card => {
+
+      card.addEventListener("mouseenter", () => {
+
+        gsap.to(card, {
+          y: -3,
+          duration: 0.2,
+          ease: "power2.out"
+        });
+
+      });
+
+      card.addEventListener("mouseleave", () => {
+
+        gsap.to(card, {
+          y: 0,
+          duration: 0.2,
+          ease: "power2.out"
+        });
+
+      });
+
+    });
+
+  </script>
+
+  {% block scripts %}{% endblock %}
+
+</body>
+
+</html>
+
+

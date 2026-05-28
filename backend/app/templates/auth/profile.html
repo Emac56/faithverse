@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto p-6">
+
+    <div class="bg-white shadow rounded-xl p-6">
+
+        <h1 class="text-3xl font-bold mb-6">
+            User Profile
+        </h1>
+
+        <div class="space-y-4">
+
+            <div>
+                <p class="text-gray-500 text-sm">
+                    Username
+                </p>
+
+                <p class="text-lg font-semibold">
+                    {{ user.username }}
+                </p>
+            </div>
+
+            <div>
+                <p class="text-gray-500 text-sm">
+                    Email
+                </p>
+
+                <p class="text-lg font-semibold">
+                    {{ user.email }}
+                </p>
+            </div>
+
+            <div>
+                <p class="text-gray-500 text-sm">
+                    Role
+                </p>
+
+                <p class="text-lg font-semibold">
+                    {{ user.role }}
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

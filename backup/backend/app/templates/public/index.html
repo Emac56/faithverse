@@ -1,0 +1,146 @@
+<!-- templates/public/index.html -->
+<!-- Phase 7.2: Updated extends path to layouts/base_public.html -->
+{% extends "layouts/base_public.html" %}
+
+{% block title %}Home{% endblock %}
+{% block meta_description %}FaithVerse — Submit your prayer request and let the community pray alongside you.{% endblock %}
+
+{% block content %}
+
+  <!-- HERO SECTION -->
+  <section class="hero" aria-label="Hero banner">
+    <div class="hero-content">
+
+      <span class="hero-badge">Community of Prayer</span>
+
+      <h1 class="hero-title">
+        Bring Your Prayers,<br />
+        <em>Find Your Faith</em>
+      </h1>
+
+      <p class="hero-subtitle">
+        FaithVerse is a place where you can share your prayer requests
+        and let the community pray alongside you. No one prays alone here.
+      </p>
+
+      <div class="hero-actions">
+        <a href="{{ url_for('public.prayer_wall') }}#submit" class="btn btn-white">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 11V6a2 2 0 0 0-4 0v5"/>
+            <path d="M14 10V4a2 2 0 0 0-4 0v6"/>
+            <path d="M10 10.5V6a2 2 0 0 0-4 0v8"/>
+            <path d="M6 14v1a6 6 0 0 0 6 6h0a6 6 0 0 0 6-6v-3a2 2 0 0 0-4 0"/>
+          </svg>
+          Submit a Prayer
+        </a>
+        <a href="{{ url_for('public.prayer_wall') }}"
+           class="btn btn-outline"
+           style="border-color: rgba(255,255,255,0.4); color: white;">
+          View Prayer Wall
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="section" aria-label="Features">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <span class="section-label">What We Offer</span>
+        <h2 class="section-title">A Community Built on Faith</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">
+          More than a prayer app — FaithVerse is a community that believes
+          every prayer matters and every voice deserves to be heard.
+        </p>
+      </div>
+
+      <div class="features-grid">
+
+        <!-- Feature 1 -->
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Submit Prayer Requests</h3>
+          <p class="card-text">
+            Share what's on your heart. Submit anonymously or with your name.
+            Our community will pray alongside you.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Public Prayer Wall</h3>
+          <p class="card-text">
+            Approved prayers appear on the community wall. See how others
+            are believing and standing in faith together.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Safe & Moderated</h3>
+          <p class="card-text">
+            Every request is reviewed before going public. We keep the
+            community respectful and uplifting for everyone.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STATISTICS SECTION -->
+  <!-- Phase 7.5 will replace placeholder numbers with real database values -->
+  <section class="section-sm" style="background: var(--violet-50);" aria-label="Statistics">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 2rem; text-align: center;">
+        <div>
+          <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--violet-700);">1,000+</div>
+          <p style="font-size: 0.9rem; color: var(--gray-600); margin: 0;">Prayers Submitted</p>
+        </div>
+        <div>
+          <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--violet-700);">500+</div>
+          <p style="font-size: 0.9rem; color: var(--gray-600); margin: 0;">Prayers Answered</p>
+        </div>
+        <div>
+          <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--violet-700);">24/7</div>
+          <p style="font-size: 0.9rem; color: var(--gray-600); margin: 0;">Community Prayer</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section" aria-label="Call to action">
+    <div class="container">
+      <h2 class="cta-title">Your Prayer Matters</h2>
+      <p class="cta-text">
+        Whether it's healing, guidance, or gratitude —
+        no prayer is too small. Share it with us today.
+      </p>
+      <a href="{{ url_for('public.prayer_wall') }}#submit" class="btn btn-white">
+        Submit Your Prayer Request
+      </a>
+    </div>
+  </section>
+
+{% endblock %}

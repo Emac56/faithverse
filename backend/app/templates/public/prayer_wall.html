@@ -1,0 +1,843 @@
+<!-- templates/public/prayer_wall.html -->
+{% extends "layouts/base_public.html" %}
+
+{% block title %}Prayer Wall{% endblock %}
+
+{% block meta_description %}
+Share your prayer request on the FaithVerse Prayer Wall. The community is listening.
+{% endblock %}
+
+{% block content %}
+
+<!-- PAGE WRAPPER -->
+<div class="relative overflow-x-hidden bg-gradient-to-b from-violet-50 via-white to-white">
+
+  <!-- PAGE HERO -->
+  <section class="relative overflow-hidden border-b border-violet-100 bg-gradient-to-br from-violet-700 via-violet-600 to-violet-800">
+
+    <!-- BACKGROUND GLOWS -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+
+      <div class="absolute -left-16 -top-16 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
+
+      <div class="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-fuchsia-300/10 blur-3xl"></div>
+
+    </div>
+
+    <div class="relative mx-auto flex min-h-[280px] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
+
+      <!-- BREADCRUMB -->
+      <nav class="mb-6 flex flex-wrap items-center gap-2 text-sm text-violet-100/90"
+           aria-label="Breadcrumb">
+
+        <a href="{{ url_for('public.index') }}"
+           class="transition-colors duration-200 hover:text-white">
+
+          Home
+
+        </a>
+
+        <span class="text-violet-200">/</span>
+
+        <span class="font-medium text-white">
+
+          Prayer Wall
+
+        </span>
+
+      </nav>
+
+      <!-- HERO CONTENT -->
+      <div class="max-w-3xl">
+
+        <div class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm">
+
+          Community Prayer Requests
+
+        </div>
+
+        <h1 class="mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
+
+          Prayer Wall
+
+        </h1>
+
+        <p class="mt-5 max-w-2xl text-base leading-8 text-violet-100 sm:text-lg">
+
+          Share your prayer request in a peaceful and welcoming space where people can stand together in faith and encouragement.
+
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SUBMIT SECTION -->
+  <section class="relative px-4 py-14 sm:px-6 lg:px-8 lg:py-20"
+           id="submit">
+
+    <div class="mx-auto w-full max-w-3xl">
+
+      <!-- SECTION HEADER -->
+      <div class="mb-10 text-center">
+
+        <div class="inline-flex items-center rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
+
+          Submit a Request
+
+        </div>
+
+        <h2 class="mt-5 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+
+          Share Your Prayer
+
+        </h2>
+
+        <p class="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+
+          Your request will be reviewed carefully before appearing publicly on the prayer wall.
+
+        </p>
+
+      </div>
+
+      <!-- RESPONSE MESSAGE -->
+      <div id="prayer-form-message"
+           class="hidden rounded-2xl border px-5 py-4 text-sm font-medium shadow-sm transition-all duration-300">
+
+      </div>
+
+      <!-- FORM CARD -->
+      <div class="overflow-hidden rounded-3xl border border-violet-100 bg-white p-5 shadow-sm shadow-violet-100/40 sm:p-7 lg:p-8">
+
+        <form id="prayer-form"
+              class="space-y-6">
+
+          <!-- NAME -->
+          <div>
+
+            <label for="name"
+                   class="mb-2 block text-sm font-semibold text-slate-700">
+
+              Your Name
+
+              <span class="text-violet-600">*</span>
+
+            </label>
+
+            <input type="text"
+                   id="name"
+                   name="name"
+                   required
+                   placeholder="Enter your name"
+                   class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 sm:text-base" />
+
+          </div>
+
+          <!-- EMAIL -->
+          <div>
+
+            <label for="email"
+                   class="mb-2 block text-sm font-semibold text-slate-700">
+
+              Email
+
+              <span class="ml-1 text-xs font-normal text-slate-400">
+
+                (optional)
+
+              </span>
+
+            </label>
+
+            <input type="email"
+                   id="email"
+                   name="email"
+                   placeholder="your@email.com"
+                   class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 sm:text-base" />
+
+          </div>
+
+          <!-- TITLE -->
+          <div>
+
+            <label for="prayer_title"
+                   class="mb-2 block text-sm font-semibold text-slate-700">
+
+              Prayer Title
+
+              <span class="text-violet-600">*</span>
+
+            </label>
+
+            <input type="text"
+                   id="prayer_title"
+                   name="prayer_title"
+                   required
+                   placeholder="Brief title of your prayer request"
+                   class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 sm:text-base" />
+
+          </div>
+
+          <!-- MESSAGE -->
+          <div>
+
+            <label for="prayer_message"
+                   class="mb-2 block text-sm font-semibold text-slate-700">
+
+              Prayer Request
+
+              <span class="text-violet-600">*</span>
+
+            </label>
+
+            <textarea id="prayer_message"
+                      name="prayer_message"
+                      required
+                      rows="6"
+                      placeholder="Share your prayer request here..."
+                      class="min-h-[160px] w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm leading-7 text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 sm:text-base"></textarea>
+
+          </div>
+
+          <!-- BUTTON -->
+          <button type="submit"
+                  id="prayer-submit-btn"
+                  class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-violet-600 to-violet-700 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-violet-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-violet-300 disabled:cursor-not-allowed disabled:opacity-70 sm:text-base">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-5 w-5"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+              <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"/>
+
+            </svg>
+
+            Submit Prayer Request
+
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- PRAYER WALL -->
+  <section class="relative bg-violet-50/70 px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+
+    <div class="mx-auto w-full max-w-7xl">
+
+      <!-- HEADER -->
+      <div class="mb-10 text-center">
+
+        <div class="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm">
+
+          Community Prayers
+
+        </div>
+
+        <h2 class="mt-5 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+
+          Standing Together in Faith
+
+        </h2>
+
+        {% if prayers %}
+
+          <p class="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+
+            {{ prayers|length }} prayer{{ 's' if prayers|length != 1 else '' }} shared by our community.
+
+          </p>
+
+        {% endif %}
+
+      </div>
+
+      {% if prayers %}
+
+      <!-- SEARCH + FILTER -->
+      <div class="mb-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+        <!-- SEARCH -->
+        <div class="w-full lg:max-w-md">
+
+          <div class="relative">
+
+            <div class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-400">
+
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-5 w-5"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/>
+
+              </svg>
+
+            </div>
+
+            <input type="text"
+                   placeholder="Search prayers..."
+                   oninput="searchPrayerCards(this.value)"
+                   class="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-12 pr-4 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 sm:text-base" />
+
+          </div>
+
+        </div>
+
+        <!-- FILTERS -->
+        <div class="flex flex-wrap gap-3">
+
+          <button onclick="filterPrayers('all')"
+                  id="filter-all"
+                  class="filter-btn active-filter">
+
+            All
+
+          </button>
+
+          <button onclick="filterPrayers('approved')"
+                  id="filter-approved"
+                  class="filter-btn">
+
+            Approved
+
+          </button>
+
+          <button onclick="filterPrayers('answered')"
+                  id="filter-answered"
+                  class="filter-btn">
+
+            Answered
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- CARDS GRID -->
+      <div id="prayer-cards-grid"
+           class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+
+        {% for prayer in prayers %}
+
+        <!-- CARD -->
+        <article class="prayer-card group flex h-full flex-col overflow-hidden rounded-3xl border border-violet-100 bg-white p-6 shadow-sm shadow-violet-100/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100/70"
+                 data-status="{{ prayer.status }}"
+                 data-text="{{ prayer.title|lower }} {{ (prayer.message or '')|lower }}">
+
+          <!-- CARD HEADER -->
+          <div class="mb-5 flex items-start justify-between gap-4">
+
+            <!-- ICON -->
+            <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-700">
+
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-6 w-6"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v16m8-8H4"/>
+
+              </svg>
+
+            </div>
+
+            <!-- BADGE -->
+            <span class="badge
+              {% if prayer.status == 'answered' %}badge-green
+              {% else %}badge-violet{% endif %}">
+
+              {% if prayer.status == 'answered' %}
+
+                <span class="inline-flex items-center gap-1">
+
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                       class="h-3.5 w-3.5"
+                       fill="none"
+                       viewBox="0 0 24 24"
+                       stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"/>
+
+                  </svg>
+
+                  Answered
+
+                </span>
+
+              {% else %}
+
+                <span class="inline-flex items-center gap-1">
+
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                       class="h-3.5 w-3.5"
+                       fill="none"
+                       viewBox="0 0 24 24"
+                       stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 8v4l3 3"/>
+
+                  </svg>
+
+                  Approved
+
+                </span>
+
+              {% endif %}
+
+            </span>
+
+          </div>
+
+          <!-- TITLE -->
+          <h3 class="text-xl font-bold leading-snug text-slate-900">
+
+            {{ prayer.title[:60] }}{% if prayer.title|length > 60 %}...{% endif %}
+
+          </h3>
+
+          <!-- MESSAGE -->
+          {% if prayer.message %}
+
+          <p class="mt-4 flex-grow text-sm leading-7 text-slate-600 sm:text-base">
+
+            {{ prayer.message[:160] }}{% if prayer.message|length > 160 %}...{% endif %}
+
+          </p>
+
+          {% endif %}
+
+          <!-- FOOTER -->
+          <div class="mt-6 flex items-center justify-between gap-3 border-t border-slate-100 pt-4 text-sm">
+
+            <span class="text-slate-400">
+
+              {{ prayer.created_at[:10] if prayer.created_at else '' }}
+
+            </span>
+
+            <span class="font-semibold text-violet-600">
+
+              {{ prayer.submitted_by or 'Anonymous' }}
+
+            </span>
+
+          </div>
+
+        </article>
+
+        {% endfor %}
+
+      </div>
+
+      <!-- NO RESULTS -->
+      <div id="no-search-results"
+           class="hidden py-16 text-center text-slate-400">
+
+        <div class="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-sm">
+
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-9 w-9"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 16l4-4 4 4m0-8l-4 4-4-4"/>
+
+          </svg>
+
+        </div>
+
+        <p class="text-base font-medium">
+
+          No prayers match your search.
+
+        </p>
+
+      </div>
+
+      {% else %}
+
+      <!-- EMPTY STATE -->
+      <div class="py-20 text-center text-slate-400">
+
+        <div class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-white shadow-sm">
+
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-10 w-10 text-violet-600"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10a2 2 0 012-2h2m10-4H7m10 0a2 2 0 012 2v0a2 2 0 01-2 2H7a2 2 0 01-2-2v0a2 2 0 012-2m10 0V2H7v2"/>
+
+          </svg>
+
+        </div>
+
+        <p class="text-lg font-medium">
+
+          No prayers yet. Be the first to share.
+
+        </p>
+
+        <a href="#submit"
+           class="mt-6 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-violet-600 to-violet-700 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-violet-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-violet-300">
+
+          Submit a Prayer
+
+        </a>
+
+      </div>
+
+      {% endif %}
+
+    </div>
+
+  </section>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  const form      = document.getElementById('prayer-form');
+
+  const msgBox    = document.getElementById('prayer-form-message');
+
+  const submitBtn = document.getElementById('prayer-submit-btn');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async function (e) {
+
+    e.preventDefault();
+
+    const data = {
+
+      name: document.getElementById('name').value.trim(),
+
+      email: document.getElementById('email').value.trim(),
+
+      prayer_title: document.getElementById('prayer_title').value.trim(),
+
+      prayer_message: document.getElementById('prayer_message').value.trim()
+
+    };
+
+    if (!data.name || !data.prayer_title || !data.prayer_message) {
+
+      showMsg('Please fill in all required fields.', false);
+
+      return;
+
+    }
+
+    submitBtn.disabled = true;
+
+    submitBtn.innerHTML = `
+
+      <span class="inline-flex items-center gap-2">
+
+        <svg class="h-5 w-5 animate-spin"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+
+          <circle class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"></circle>
+
+          <path class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+
+        </svg>
+
+        Submitting...
+
+      </span>
+
+    `;
+
+    try {
+
+      const res = await fetch('/api/prayer-request', {
+
+        method: 'POST',
+
+        headers: {
+
+          'Content-Type': 'application/json'
+
+        },
+
+        body: JSON.stringify(data)
+
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+
+        showMsg(json.message, true);
+
+        form.reset();
+
+      } else {
+
+        showMsg(json.message || 'Something went wrong.', false);
+
+      }
+
+    } catch (err) {
+
+      showMsg('Network error. Please try again.', false);
+
+    } finally {
+
+      submitBtn.disabled = false;
+
+      submitBtn.innerHTML = `
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="h-5 w-5"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor">
+
+          <path stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"/>
+
+        </svg>
+
+        Submit Prayer Request
+
+      `;
+
+    }
+
+  });
+
+  function showMsg(text, success) {
+
+    msgBox.classList.remove('hidden');
+
+    msgBox.textContent = text;
+
+    msgBox.className = success
+
+      ? 'mb-6 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-medium text-green-700 shadow-sm'
+
+      : 'mb-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700 shadow-sm';
+
+    if (success) {
+
+      setTimeout(() => {
+
+        msgBox.classList.add('hidden');
+
+      }, 6000);
+
+    }
+
+    msgBox.scrollIntoView({
+
+      behavior: 'smooth',
+
+      block: 'center'
+
+    });
+
+  }
+
+});
+
+// FILTER
+function filterPrayers(status) {
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+
+    btn.classList.remove('active-filter');
+
+  });
+
+  const active = document.getElementById('filter-' + status);
+
+  if (active) active.classList.add('active-filter');
+
+  document.querySelectorAll('.prayer-card').forEach(card => {
+
+    card.style.display =
+
+      (status === 'all' || card.dataset.status === status)
+
+      ? ''
+
+      : 'none';
+
+  });
+
+}
+
+// SEARCH
+function searchPrayerCards(query) {
+
+  const q = query.toLowerCase().trim();
+
+  let visible = 0;
+
+  document.querySelectorAll('.prayer-card').forEach(card => {
+
+    const match = !q || (card.dataset.text || '').includes(q);
+
+    card.style.display = match ? '' : 'none';
+
+    if (match) visible++;
+
+  });
+
+  const noResults = document.getElementById('no-search-results');
+
+  if (noResults) {
+
+    noResults.style.display = (visible === 0 && q) ? 'block' : 'none';
+
+  }
+
+}
+
+</script>
+
+<style>
+
+.filter-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 1rem;
+
+  border: 1px solid var(--gray-200);
+
+  background: white;
+
+  padding: 0.8rem 1.1rem;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+
+  color: var(--gray-600);
+
+  transition: all 0.25s ease-in-out;
+
+  cursor: pointer;
+
+}
+
+.filter-btn:hover {
+
+  background: var(--violet-50);
+
+  color: var(--violet-700);
+
+  border-color: var(--violet-200);
+
+}
+
+}
+
+.active-filter {
+
+  background: var(--violet-600) !important;
+
+  border-color: var(--violet-600) !important;
+
+  color: white !important;
+
+}
+
+.badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  border-radius: 9999px;
+
+  padding: 0.45rem 0.8rem;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+}
+
+.badge-green {
+
+  background: #dcfce7;
+
+  color: #166534;
+
+}
+
+.badge-violet {
+
+  background: #ede9fe;
+
+  color: #6d28d9;
+
+}
+
+</style>
+
+{% endblock %}
+
+

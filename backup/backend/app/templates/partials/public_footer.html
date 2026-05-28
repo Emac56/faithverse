@@ -1,0 +1,52 @@
+<!-- partials/public_footer.html -->
+<!-- Reusable footer for the public FaithVerse website. -->
+<!-- Included in layouts/base_public.html via {% include %}. -->
+
+<footer class="public-footer" role="contentinfo">
+  <div class="footer-container">
+
+    <!-- ============================================================
+         FOOTER TOP ROW
+         Brand on left, nav links on right.
+         On mobile: stacks vertically (via CSS flex-wrap).
+         ============================================================ -->
+    <div class="footer-top">
+
+      <!-- Brand Block -->
+      <div>
+        <div class="footer-brand">
+          <!-- Inline cross SVG icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="#8b5cf6" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M2 12h20"/>
+          </svg>
+          FaithVerse
+        </div>
+        <p class="footer-tagline">Where Faith Connects</p>
+      </div>
+
+      <!-- Footer Navigation Links -->
+      <ul class="footer-links" role="list">
+        <li><a href="{{ url_for('public.index') }}">Home</a></li>
+        <li><a href="{{ url_for('public.about') }}">About</a></li>
+        <li><a href="{{ url_for('public.prayer_wall') }}">Prayer Wall</a></li>
+        <li><a href="{{ url_for('public.contact') }}">Contact</a></li>
+      </ul>
+
+    </div>
+
+    <!-- ============================================================
+         FOOTER BOTTOM ROW
+         Copyright. 'now' is injected by the context processor
+         in app/__init__.py so the year is always current.
+         ============================================================ -->
+    <div class="footer-bottom">
+      <p>
+        &copy; {{ now.year if now else '2025' }} FaithVerse.
+        All rights reserved.
+      </p>
+    </div>
+
+  </div>
+</footer>

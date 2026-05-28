@@ -1,0 +1,77 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Analytics{% endblock %}
+{% block navbar_title %}Analytics{% endblock %}
+
+{% block content %}
+
+<!-- PRAYER STATUS BREAKDOWN -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <h3 class="font-semibold text-gray-800 mb-4">Prayer Status Breakdown</h3>
+    <div class="space-y-3">
+
+      <!-- Pending bar -->
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-gray-600">Pending</span>
+          <span class="font-medium text-yellow-600">{{ prayer_status.pending }}</span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-2">
+          <div class="bg-yellow-400 h-2 rounded-full"
+               style="width: {% if prayer_status.total > 0 %}{{ (prayer_status.pending / prayer_status.total * 100)|round }}%{% else %}0%{% endif %}">
+          </div>
+        </div>
+      </div>
+
+      <!-- Approved bar -->
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-gray-600">Approved</span>
+          <span class="font-medium text-blue-600">{{ prayer_status.approved }}</span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-2">
+          <div class="bg-blue-400 h-2 rounded-full"
+               style="width: {% if prayer_status.total > 0 %}{{ (prayer_status.approved / prayer_status.total * 100)|round }}%{% else %}0%{% endif %}">
+          </div>
+        </div>
+      </div>
+
+      <!-- Answered bar -->
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-gray-600">Answered</span>
+          <span class="font-medium text-green-600">{{ prayer_status.answered }}</span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-2">
+          <div class="bg-green-400 h-2 rounded-full"
+               style="width: {% if prayer_status.total > 0 %}{{ (prayer_status.answered / prayer_status.total * 100)|round }}%{% else %}0%{% endif %}">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RECENT VISITOR TABLE -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <h3 class="font-semibold text-gray-800 mb-4">Daily Visitors (Last 7 Days)</h3>
+    <div class="space-y-2">
+      {% for day in visitor_data %}
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-600 w-28">{{ day.date }}</span>
+        <div class="flex-1 mx-3 bg-gray-100 rounded-full h-2">
+          <div class="bg-blue-400 h-2 rounded-full"
+               style="width: {{ [day.visitors * 10, 100]|min }}%">
+          </div>
+        </div>
+        <span class="font-medium text-gray-800 w-8 text-right">{{ day.visitors }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

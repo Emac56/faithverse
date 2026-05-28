@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+
+  <title>
+    {% block title %}FaithVerse{% endblock %}
+  </title>
+
+  <!-- FONT -->
+  <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+  <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+  <!-- TAILWIND -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+
+    tailwind.config = {
+
+      theme: {
+
+        extend: {
+
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          },
+
+          colors: {
+
+            primary: {
+              50: '#f5f3ff',
+              100:'#ede9fe',
+              200:'#ddd6fe',
+              300:'#c4b5fd',
+              400:'#a78bfa',
+              500:'#8b5cf6',
+              600:'#7c3aed',
+              700:'#6d28d9',
+              800:'#5b21b6',
+              900:'#4c1d95'
+            }
+
+          },
+
+          boxShadow: {
+
+            soft: '0 10px 30px rgba(124,58,237,0.08)'
+
+          }
+
+        }
+
+      }
+
+    }
+
+  </script>
+
+  {% block head %}{% endblock %}
+
+</head>
+
+<body class="bg-violet-50 text-slate-800 font-sans min-h-screen antialiased overflow-x-hidden">
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-violet-100">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="h-16 flex items-center justify-between">
+
+        <!-- LOGO -->
+        <a href="/"
+           class="flex items-center gap-3">
+
+          <div class="w-10 h-10 rounded-2xl bg-violet-600 text-white flex items-center justify-center shadow-soft">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+              <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 2v20M2 12h20" />
+
+            </svg>
+
+          </div>
+
+          <div class="leading-tight">
+
+            <h1 class="text-lg font-bold text-violet-950">
+              FaithVerse
+            </h1>
+
+            <p class="text-xs text-slate-500">
+              Where Faith Connects
+            </p>
+
+          </div>
+
+        </a>
+
+        <!-- NAVIGATION -->
+        <nav class="hidden md:flex items-center gap-2">
+
+          <a href="/"
+             class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-violet-100 hover:text-violet-700 transition duration-200">
+            Home
+          </a>
+
+          <a href="/about"
+             class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-violet-100 hover:text-violet-700 transition duration-200">
+            About
+          </a>
+
+          <a href="/prayers"
+             class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-violet-100 hover:text-violet-700 transition duration-200">
+            Prayer Wall
+          </a>
+
+          <a href="/contact"
+             class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-violet-100 hover:text-violet-700 transition duration-200">
+            Contact
+          </a>
+
+          <a href="/login"
+             class="ml-2 px-5 py-2.5 rounded-xl bg-violet-600 text-white text-sm font-semibold hover:bg-violet-700 transition duration-200 shadow-soft">
+            Login
+          </a>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content"
+        class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+
+    <div class="space-y-8 lg:space-y-10">
+
+      {% block content %}{% endblock %}
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-12 border-t border-violet-100 bg-white">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+
+        <div class="text-center md:text-left">
+
+          <h3 class="text-sm font-semibold text-violet-950">
+            FaithVerse
+          </h3>
+
+          <p class="text-xs text-slate-500 mt-1">
+            © 2025 All rights reserved
+          </p>
+
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-2">
+
+          <a href="/"
+             class="px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-violet-100 hover:text-violet-700 transition duration-200">
+            Home
+          </a>
+
+          <a href="/about"
+             class="px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-violet-100 hover:text-violet-700 transition duration-200">
+            About
+          </a>
+
+          <a href="/contact"
+             class="px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-violet-100 hover:text-violet-700 transition duration-200">
+            Contact
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+  <script>
+
+    /* PAGE LOAD */
+
+    gsap.from("header", {
+
+      opacity: 0,
+      y: -18,
+      duration: 0.5,
+      ease: "power2.out"
+
+    });
+
+    gsap.from("#main-content", {
+
+      opacity: 0,
+      y: 18,
+      duration: 0.6,
+      delay: 0.1,
+      ease: "power2.out"
+
+    });
+
+    /* SIMPLE CARD HOVER */
+
+    document.querySelectorAll(".bg-white").forEach((card) => {
+
+      card.addEventListener("mouseenter", () => {
+
+        gsap.to(card, {
+
+          y: -4,
+          duration: 0.2,
+          ease: "power2.out"
+
+        });
+
+      });
+
+      card.addEventListener("mouseleave", () => {
+
+        gsap.to(card, {
+
+          y: 0,
+          duration: 0.2,
+          ease: "power2.out"
+
+        });
+
+      });
+
+    });
+
+  </script>
+
+  {% block scripts %}{% endblock %}
+
+</body>
+
+</html>
+
