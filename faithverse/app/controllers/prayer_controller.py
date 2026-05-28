@@ -93,6 +93,7 @@ def submit_prayer(data):
     # the visitor may not have an account.
     prayer = PrayerRequest(
         user_id=None,
+	submitted_name=data.get('name', '').strip(),
         title=data.get('prayer_title', '').strip(),
         message=data.get('prayer_message', '').strip(),
         status='pending'   # Always starts as pending
