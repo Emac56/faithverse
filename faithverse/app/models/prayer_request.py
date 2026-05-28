@@ -71,6 +71,10 @@ class PrayerRequest(db.Model):
         onupdate=datetime.utcnow,
         nullable=False
     )
+    submitted_name = db.Column(
+        db.String(100),
+        nullable=True
+    )
 
     # ---------------------------------------------------------------
     # RELATIONSHIPS
@@ -98,8 +102,7 @@ class PrayerRequest(db.Model):
             'status':     self.status,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None,
-            # Include the username of the submitter if relationship is loaded
-            'submitted_by': self.user.username if self.user else 'Anonymous'
+            'submitted_by': self.user.username if self.user else (self.submitted_name or 'Anonymous')
         }
 
     def __repr__(self):
