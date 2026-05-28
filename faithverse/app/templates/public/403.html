@@ -1,0 +1,36 @@
+<!-- templates/public/404.html -->
+<!-- Shown when a visitor lands on a URL that doesn't exist. -->
+{% extends "layouts/base_public.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+
+  <section class="section" style="text-align: center; padding-top: 8rem;">
+    <div class="container" style="max-width: 560px;">
+
+      <!-- Big 404 number -->
+      <div style="font-family: var(--font-display); font-size: 6rem; font-weight: 700;
+                  color: var(--violet-200); line-height: 1; margin-bottom: 1rem;">
+        403
+      </div>
+
+      <h1 class="section-title" style="margin-bottom: 1rem;">Page Forbidden</h1>
+
+      <p class="section-subtitle" style="margin: 0 auto 2rem;">
+        You don't have permission to access this pages
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('public.index') }}" class="btn btn-primary">
+          Go to Homepage
+        </a>
+        <a href="{{ url_for('public.prayer_wall') }}" class="btn btn-outline">
+          Visit Prayer Wall
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+{% endblock %}
